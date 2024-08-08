@@ -5,6 +5,8 @@ import Products from "./components/Products";
 import Activities from "./components/Activities";
 import UpCommingEvents from "./components/UpCommingEvents";
 import Blog from "./components/Blog";
+import ContactUs from "./components/ContactUs";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -26,6 +28,12 @@ export default function Home() {
       </div>
       <div className="mt-20">
         <Blog/>
+      </div>
+      <div className="mt-20">
+        <ContactUs/>
+      </div>
+      <div className="mt-20">
+        <Footer/>
       </div>
     </div>
   );
