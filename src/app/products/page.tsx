@@ -1,10 +1,13 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import prd1 from '@/app/images/Rectangle 60.png'
 import prd3 from '@/app/images/Rectangle 61.png'
 import prd2 from '@/app/images/Rectangle 62.png'
+import { useRouter } from 'next/navigation'
 
 function page() {
+    const router = useRouter()
     const products = [
         {
             id: 1,
@@ -25,6 +28,10 @@ function page() {
             desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations…Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
         }
     ]
+
+    const handleClick = (id:any)=> {
+        router.push('/products/'+id)
+    }
     return (
         <div className='mx-20 my-20'>
             <div>
@@ -38,7 +45,7 @@ function page() {
                             </div>
                             <p>{product.desc}</p>
                             <div className='flex justify-end mt-5'>
-                                <button className='bg-[#D31145] text-white text-nowrap h-10 px-3 rounded-2xl'>More Details --{'>'}</button>
+                                <button className='bg-[#D31145] text-white text-nowrap h-10 px-3 rounded-2xl' onClick={()=> {handleClick(product.id)}}>More Details --{'>'}</button>
                             </div>
                         </div>
                     </div>
