@@ -1,7 +1,12 @@
 import Image from "next/image";
-export default function TeamMember({ name, title, description, image, socials }:any) {
+import { useRouter } from "next/navigation";
+export default function TeamMember({ name, title, description, image, socials, id }:any) {
+        const route = useRouter()
+        const handleClick = (id:any) => {
+            route.push('/team-member/'+id)
+        }
     return (
-      <div className="bg-[#F9FAFB] p-6 rounded-lg text-center">
+      <div className="bg-[#F9FAFB] p-6 rounded-lg text-center" onClick={()=> {handleClick(id)}}>
         <Image src={image} alt={name} className="w-24 h-24 mx-auto rounded-full object-cover mb-4" width={96} height={96}/>
         <h3 className="text-lg font-bold">{name}</h3>
         <p className="text-sm text-gray-600">{title}</p>
