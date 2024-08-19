@@ -9,7 +9,7 @@ function HeroSection() {
 
       <div className='mt-5'>
         <h2 className='text-5xl font-semibold max-md:text-3xl'>Fore Healthier Longer And Better Lives</h2>
-        <p className='mt-6 text-lg'>Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.</p>
+        <p className='mt-6 text-lg max-md:text-md'>Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.</p>
 
         <button className='mt-6 bg-[#B91A45] text-white px-10 rounded-2xl text-lg py-3'>Get Started</button>
 
