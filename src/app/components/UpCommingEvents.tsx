@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 function UpCommingEvents() {
@@ -9,7 +10,7 @@ function UpCommingEvents() {
           Insurance is part and parcel of day-to-day activities in life, and more importantly, in a commercial environment. Ceylinco insurance as always given us the best, with minimum hassle, and convenientsolutions, which suit our business, segment the most.
           Mr. <br /> Sheran Karunasena</p>
         <div className=' flex items-center justify-center my-6'>
-          <button className='bg-[#B91A45] text-white px-14  text-lg max-md:text-sm py-3'>Join Now</button>
+          <button className='bg-[#B91A45] text-white px-14  text-lg max-md:text-sm py-3'><Link href={'/up-comming-events'}>Join Now</Link></button>
         </div>
       </div>
     </div>

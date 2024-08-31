@@ -32,16 +32,16 @@ function Blog() {
   return (
     <div>
         <div>
-            <h1 className='text-center text-5xl font-semibold'>Read our blog</h1>
+            <h1 className='text-center text-5xl font-semibold max-md:text-3xl'>Read our blog</h1>
         </div>
 
-        <div className='grid grid-cols-3 gap-6 mt-10'>
+        <div className='grid max-md:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
             {blogs.map((blog:any) => (
                 <div key={blog.id} className='px-14'>
                     <Image src={blog.image} alt='img' width={300} height={200} />
                     <h1 className='text-xl font-semibold mt-2'>{blog.name}</h1>
                     <p className='mr-3 mb-3'>{blog.shortDesc}</p>
-                    <Link href={"#"} className='text-[#D31145]'>Learn More</Link>
+                    <Link href={"/blog"} className='text-[#D31145]'>Learn More</Link>
                 </div>
             ))}
         </div>

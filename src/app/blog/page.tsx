@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import Image from 'next/image';
 import blog1 from '@/app/images/blog1.png'
@@ -6,34 +7,40 @@ import blog3 from '@/app/images/blog3.png'
 import blog4 from '@/app/images/blog4.png'
 import blog5 from '@/app/images/blog5.png'
 import blog6 from '@/app/images/blog-6.png'
+import { useRouter } from 'next/navigation';
 
 const blogPosts = [
   {
+    id:1,
     title: 'Bill Walsh leadership lessons',
     description: 'Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?',
     image: blog1,
   },
   {
+    id:2,
     title: 'PM mental models',
     description: 'Mental models are simple expressions of complex processes or relationships.',
     image: blog2,
   },
   {
+    id:3,
     title: 'What is Wireframing?',
     description: 'Introduction to Wireframing and its Principles. Learn from the best in the industry.',
     image: blog3,
   },
-  {
+  {id:4,
     title: 'How collaboration makes us better designers',
     description: 'Collaboration can make our teams stronger, and our individual designs better.',
     image: blog4,
   },
   {
+    id:5,
     title: 'Our top 10 Javascript frameworks to use',
     description: 'JavaScript frameworks make development easy with extensive features and functionalities.',
     image: blog5,
   },
   {
+    id:6,
     title: 'Podcast: Creating a better CX Community',
     description: 'Starting a community doesn’t need to be complicated, but how do you get started?',
     image: blog6,
@@ -41,13 +48,18 @@ const blogPosts = [
 ];
 
 export default function Blog() {
+  const router = useRouter()
+
+  const handleClick = (id:any) => {
+    router.push("/blog/"+id)
+  }
   return (
     <div className="flex flex-col items-center min-h-screen ">
       <div className="max-w-6xl w-full p-8">
         <h1 className="text-3xl font-bold mb-8">All blog posts</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.map((post, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden" onClick={() => handleClick(post.id)}>
               <Image src={post.image} alt={post.title} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-semibold">{post.title}</h2>

@@ -1,7 +1,9 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 function Products() {
+    const route = useRouter()
     const products = [
         {
             id:1,
@@ -25,8 +27,9 @@ function Products() {
         }
     ]
 
-    const handleClick = (id:any)=> {
-        console.log("Button clicked"+id);
+    const handleClick = (id:any, name:any)=> {
+        route.push('/'+name+'/'+id)
+        console.log(id+name)
     }
     return (
         <div>
@@ -40,7 +43,7 @@ function Products() {
 
                 {
                     products.map((product:any) => (
-                        <div className='border-2 border-gray-300 rounded-2xl flex py-5 px-8 gap-5 cursor-pointer' key={product.id} onClick={()=> handleClick(product.id)}>
+                        <div className='border-2 border-gray-300 rounded-2xl flex py-5 px-8 gap-5 cursor-pointer' key={product.id} onClick={()=> handleClick(product.id, product.title)}>
                         <div className='w-6 h-6 rounded-full bg-blue-400'></div>
                         <div>
                             <h3 className='text-xl font-semibold max-md:text-lg'>{product.title}</h3>

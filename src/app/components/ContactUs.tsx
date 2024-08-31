@@ -5,7 +5,7 @@ import img from '@/app/images/download (1) 1.png'
 function ContactUs() {
     return (
         <div className='flex flex-col lg:flex-row border-2 rounded-3xl border-gray-300  mx-auto'>
-            <div className='w-full lg:w-1/2 flex justify-center lg:justify-start'>
+            <div className='w-full lg:w-1/2 flex justify-center lg:justify-start max-lg:hidden'>
                 <Image src={img} alt='Contact Us' className='rounded-xl' width={500}/>
             </div>
 
