@@ -11,25 +11,25 @@ export default function Home() {
   return (
     <>
       <div className="mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
-        <div>
+        <div id="hero">
           <HeroSection />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="about" className="mt-10 lg:mt-20">
           <AboutUs />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="products" className="mt-10 lg:mt-20">
           <Products />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="activities" className="mt-10 lg:mt-20">
           <Activities />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="events" className="mt-10 lg:mt-20">
           <UpCommingEvents />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="blog" className="mt-10 lg:mt-20">
           <Blog />
         </div>
-        <div className="mt-10 lg:mt-20">
+        <div id="contact" className="mt-10 lg:mt-20">
           <ContactUs />
         </div>
       </div>

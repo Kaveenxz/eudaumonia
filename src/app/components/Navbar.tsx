@@ -12,12 +12,12 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-[#B91A45]">
-      <div className="w-screen-xl flex flex-wrap items-center justify-between p-4">
-        <a href="" className="flex items-center space-x-3">
+    <nav className="bg-[#B91A45] fixed top-0 left-0 w-full z-50">
+      <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between p-4">
+        <Link href="/" className="flex items-center space-x-3">
           <Image src={logo} className="h-8" alt="Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">EUDAIMONIA</span>
-        </a>
+        </Link>
         <button
           data-collapse-toggle="navbar-default"
           type="button"
@@ -32,30 +32,27 @@ const Navbar: React.FC = () => {
           </svg>
         </button>
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full lg:block lg:w-auto`} id="navbar-default">
-          <ul className="font-medium text-xl flex flex-col p-4 lg:p-0 mt-4 rounded-lg  lg:flex-row lg:space-x-8 rtl:space-x-reverse lg:mt-0 items-center ">
+          <ul className="font-medium text-xl flex flex-col p-4 lg:p-0 mt-4 rounded-lg lg:flex-row lg:space-x-8 rtl:space-x-reverse lg:mt-0 items-center">
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded lg:bg-transparent lg:p-0" aria-current="page">Home</a>
+              <Link href="/#hero" className="block py-2 px-3 text-white rounded lg:bg-transparent lg:p-0" aria-current="page">Home</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">About</a>
+              <Link href="/#about" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">About</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">Plans</a>
+              <Link href="/#products" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Products</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">Activities</a>
+              <Link href="/#activities" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Activities</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">Events</a>
+              <Link href="/#events" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Events</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">Blogs</a>
+              <Link href="/#blog" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Blogs</Link>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-white rounded  lg:hover:bg-transparent lg:p-0">Events</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 px-3 text-[#B91A45] rounded bg-white lg:hover:bg-transparent lg:px-5 lg:py-1">ContactUs</a>
+              <Link href="/#contact" className="block py-2 px-3 text-[#B91A45] rounded bg-white lg:hover:bg-transparent lg:px-5 lg:py-1">Contact Us</Link>
             </li>
           </ul>
         </div>

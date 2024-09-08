@@ -104,9 +104,9 @@ const teamMembers = [
     description: "Worked at Figma, Pitch, and Protocol Labs.",
     image: avt7,
     socials: [
-      { icon: "<FaTwitter />", link: "#" },
-      { icon: "<FaLinkedin />", link: "#" },
-      { icon: "<FaGithub />", link: "#" },
+      { icon: <FaTwitter />, link: "#" },
+      { icon: <FaLinkedin />, link: "#" },
+      { icon: <FaGithub />, link: "#" },
     ],
   },
   
@@ -118,7 +118,7 @@ export default function MeetOurTeam() {
     }
 
   return (
-    <section className="py-12">
+    <section className="py-12 mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Meet our team</h2>
         <p className="text-center text-gray-600 mb-12">Our philosophy is simple — hire a team of diverse, passionate people and foster a culture that empowers you to do your best work.</p>

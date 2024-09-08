@@ -35,7 +35,7 @@ function page() {
         router.push("/"+url.products+"/"+url.id+"/"+id)
     }
     return (
-        <div className='lg:mx-20 lg:my-20 mx-6 my-6'>
+        <div className='lg:mx-20 lg:my-20 mx-6 my-20 '>
             <div>
                 {products.map((product: any) => (
                     <div key={product.id} className='flex gap-5 my-5 max-md:flex-col'>

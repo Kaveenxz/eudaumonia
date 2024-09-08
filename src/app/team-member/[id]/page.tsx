@@ -4,7 +4,7 @@ import { BsDribbble, BsLinkedin, BsTwitter } from "react-icons/bs";
 
 export default function ContactForm() {
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 max-lg:mt-6">
+    <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 max-lg:mt-6 mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
       <div className="bg-white py-10 md:py-14 rounded-2xl border-2 w-full md:w-1/2 mb-6 md:mb-0">
         <Image
           src={img}
