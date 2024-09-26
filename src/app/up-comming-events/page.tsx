@@ -13,7 +13,7 @@ const eventDetails = {
 
 export default function Home() {
   return (
-    <div className="flex w-srceen">
+    <div className="flex w-srceen mt-14">
       <div className=" p-8  w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Side */}
