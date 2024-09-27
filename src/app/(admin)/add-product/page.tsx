@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState } from 'react';
 
 export default function AddProductForm() {
@@ -78,100 +78,103 @@ export default function AddProductForm() {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-white to-gray-100 flex items-center justify-center">
-      <div className="container max-w-screen-lg mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-semibold text-center mb-6 text-red-500">Add Product</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div className="min-h-screen p-4 bg-gradient-to-b from-white to-gray-100 flex items-center justify-center">
+      <div className="container w-screen-md mx-auto ">
+        <div className="bg-white rounded-lg  p-6 space-y-6">
+          <h2 className="text-xl font-semibold text-center text-red-500">Add Product</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Left Side Inputs */}
               <div className="space-y-4">
-                {/* Main Title */}
                 <div>
-                  <label className="block font-medium text-gray-700">Main Title</label>
+                  <label className="block text-gray-700">Main Title</label>
                   <input
                     type="text"
                     name="mainTitle"
                     value={formData.mainTitle}
                     onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                    className="w-full p-3 border border-gray-300 rounded"
                     placeholder="Enter Main Title"
                   />
                   {errors.mainTitle && <p className="text-red-500 text-sm">{errors.mainTitle}</p>}
                 </div>
 
-                {/* Topic */}
                 <div>
-                  <label className="block font-medium text-gray-700">Topic</label>
+                  <label className="block text-gray-700">Topic</label>
                   <input
                     type="text"
                     name="topic"
                     value={formData.topic}
                     onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                    className="w-full p-3 border border-gray-300 rounded"
                     placeholder="Enter Topic"
                   />
                   {errors.topic && <p className="text-red-500 text-sm">{errors.topic}</p>}
                 </div>
 
-                {/* Maximum Cover Ceasing Age */}
                 <div>
-                  <label className="block font-medium text-gray-700">Maximum Cover Ceasing Age</label>
+                  <label className="block text-gray-700">Maximum Cover Ceasing Age</label>
                   <input
                     type="number"
                     name="maxAge"
                     value={formData.maxAge}
                     onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                    className="w-full p-3 border border-gray-300 rounded"
                     placeholder="Enter Maximum Age"
                   />
                   {errors.maxAge && <p className="text-red-500 text-sm">{errors.maxAge}</p>}
                 </div>
 
-                {/* Issue Age */}
                 <div>
-                  <label className="block font-medium text-gray-700">Issue Age</label>
+                  <label className="block text-gray-700">Issue Age</label>
                   <input
                     type="number"
                     name="issueAge"
                     value={formData.issueAge}
                     onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                    className="w-full p-3 border border-gray-300 rounded"
                     placeholder="Enter Issue Age"
                   />
                   {errors.issueAge && <p className="text-red-500 text-sm">{errors.issueAge}</p>}
                 </div>
               </div>
 
-              {/* Right Side Image Upload */}
+              {/* Image Upload Section */}
               <div className="space-y-4">
-                <div>
-                  <label className="block font-medium text-gray-700">Add Image</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none"
-                  />
-                  {imagePreview && (
+                <label className="block text-gray-700">Add Image</label>
+                <div
+                  className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative cursor-pointer"
+                  onClick={() => document.getElementById('fileInput').click()}
+                  style={{ aspectRatio: '4 / 3' }}
+                >
+                  {imagePreview ? (
                     <img
                       src={imagePreview}
                       alt="Selected"
-                      className="w-full h-40 mt-2 object-cover rounded"
+                      className="w-full h-full object-cover rounded"
                     />
+                  ) : (
+                    <span className="text-gray-500">Click to Add Image</span>
                   )}
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Description */}
-            <div className="mb-6">
-              <label className="block font-medium text-gray-700">Description</label>
+            <div>
+              <label className="block text-gray-700">Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded"
                 rows={4}
                 placeholder="Enter Description"
               ></textarea>
