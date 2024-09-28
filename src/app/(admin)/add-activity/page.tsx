@@ -1,41 +1,63 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation } from 'react-query';
+import { addActivity } from '@/app/api/activities/api';
 
 export default function ActivitiesForm() {
+  const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   const [details, setDetails] = useState('');
   const [image, setImage] = useState(null);
-  const [error, setError] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
+  const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleImageChange = (e) => {
+
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      const base64Image = await convertToBase64(file);
+      setImage(base64Image);
       setImagePreview(URL.createObjectURL(file)); // For preview
     }
   };
 
   const validateForm = () => {
-    if (!description || !details || !image) {
-      setError('All fields are required!');
+    if (!topic || !description || !image) {
+      setError('Topic, Description, and Image are required!');
       return false;
     }
     setError('');
     return true;
   };
 
+  const submitData = useMutation({
+    mutationFn: async (activityData) => addActivity(activityData),
+    onSuccess: () => {
+      console.log('Activity added successfully');
+    },
+    retry: 3,
+    retryDelay: 5000,
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle the upload process here
-      console.log({ description, details, image });
+      const activityData = {
+        topic,
+        description,
+        details,
+        imagePath: image,
+        createdBy: "2", 
+      };
+
+      submitData.mutate(activityData);
     }
   };
 
   const handleClear = () => {
+    setTopic('');
     setDescription('');
     setDetails('');
     setImage(null);
@@ -53,6 +75,20 @@ export default function ActivitiesForm() {
 
         <form onSubmit={handleSubmit} className="sm:grid grid-cols-1 lg:grid-cols-2 gap-6 max-sm:flex max-sm:flex-col">
           <div className="space-y-6">
+            {/* Topic Input */}
+            <div>
+              <label htmlFor="topic" className="block text-gray-700 font-medium">Topic</label>
+              <input
+                id="topic"
+                type="text"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                className="w-full mt-2 p-3 border border-gray-300 rounded focus:outline-none focus:border-red-500"
+                placeholder="Enter the topic"
+              />
+            </div>
+
+            {/* Description */}
             <div>
               <label htmlFor="description" className="block text-gray-700 font-medium">Description</label>
               <textarea
@@ -78,6 +114,7 @@ export default function ActivitiesForm() {
           </div>
 
           <div className="space-y-6">
+            {/* Image Upload */}
             <div>
               <label htmlFor="image" className="block text-gray-700 font-medium">Add Image</label>
               <div
