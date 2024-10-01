@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
-import { postUpcommingEvent } from '@/app/api/upcommingEvent/api'; // Import your API function
+import { upcommingEventRegister } from '@/app/api/upcommingEvent/api'; // Import your API function
 
 const eventDetails = {
   title: 'InsureFest 2024',
@@ -15,7 +15,7 @@ const eventDetails = {
 };
 
 export default function Home() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData]:any = useState({
     name: '',
     email: '',
     phoneNumber: '',
@@ -25,7 +25,7 @@ export default function Home() {
   });
 
   // Mutation for submitting the form
-  const mutation = useMutation((data) => postUpcommingEvent(data));
+  const mutation = useMutation((data) => upcommingEventRegister(data));
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {

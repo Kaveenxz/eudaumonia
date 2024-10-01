@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const postUpcommingEvent = async (data:any)=> {
-    const url:any= process.env.NEXT_PUBLIC_SEND_UPCOMMING_EVENT_DATA;
+export const getProductCategories = async () => {
+    const url:any = process.env.NEXT_PUBLIC_GET_PRODUCT_CATEGORIES;
 
     try{
-        const response = await axios.post(url, data)
+        const response = axios.get(url);
         return response;
     }catch(error:any){
         if (error.response) {

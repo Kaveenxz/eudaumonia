@@ -15,18 +15,7 @@ function page() {
             image: prd1,
             desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations…Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
         },
-        {
-            id: 2,
-            title: "HEALTH",
-            image: prd3,
-            desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations… Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
-        },
-        {
-            id: 3,
-            title: "HEALTH",
-            image: prd2,
-            desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations…Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
-        }
+        
     ]
 
     const handleClick = (id:any)=> {
