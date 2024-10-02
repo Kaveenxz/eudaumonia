@@ -65,8 +65,10 @@ import React from 'react'
 import { useParams } from 'next/navigation'
 import { getProductById } from '@/app/api/product/apit' // Adjust the path to your actual API function
 import { useQuery } from 'react-query'
+import prd2 from '@/app/images/Rectangle 62.png'
+import Image from 'next/image'
 
-const defaultImageUrl = '/path-to-your-default-image.jpg';
+const defaultImageUrl = prd2;
 
     function ProductDetails() {
         const { id } = useParams();
@@ -84,7 +86,7 @@ const defaultImageUrl = '/path-to-your-default-image.jpg';
         return (
             <div className='mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20'>
                 <h1 className='text-3xl font-bold'>{name || 'Product Name'}</h1>
-                <img src={imageUrl} alt={name || 'Product Image'} className='my-4 w-full h-auto max-w-md' />
+                <Image src={imageUrl} alt={name || 'Product Image'} className='my-4 w-full h-auto max-w-md' />
                 <p className='text-lg my-2'>{description || 'No description available'}</p>
                 <p className='text-md'>Category ID: {categoryId || 'N/A'}</p>
             </div>
