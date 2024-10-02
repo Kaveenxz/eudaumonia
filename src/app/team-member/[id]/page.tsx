@@ -1,29 +1,56 @@
+
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useQuery } from 'react-query';
+import { getTeamMemberById } from '@/app/api/team-member/api'; // Import your API function
 import Image from "next/image";
-import img from '@/app/images/Image (1).png';
 import { BsDribbble, BsLinkedin, BsTwitter } from "react-icons/bs";
 
-export default function ContactForm() {
+export default function ContactForm(para:any) {
+  const router = useRouter();
+
+  const id = para.params.id
+
+  const { data, isLoading, isError } = useQuery(['teamMember', id], () => getTeamMemberById(id), {
+    enabled: !!id,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading team member details.</div>;
+  }
+
+  if (!data) {
+    return <div>No data found for this team member.</div>;
+  }
+
   return (
     <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 max-lg:mt-6 mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
       <div className="bg-white py-10 md:py-14 rounded-2xl border-2 w-full md:w-1/2 mb-6 md:mb-0">
         <Image
-          src={img}
-          alt="Olivia Rhye"
+          src={data.imagePath}
+          alt={data.name}
+          width={320}
+          height={320}
           className="w-60 h-60 md:w-80 md:h-80 mx-auto rounded-full object-cover mb-4"
         />
-        <h3 className="text-lg md:text-xl font-bold text-center">Olivia Rhye</h3>
+        <h3 className="text-lg md:text-xl font-bold text-center">{data.name}</h3>
         <p className="text-center text-gray-600 my-4 md:my-8 text-base md:text-lg">
-          Thank you for considering us for your insurance needs. We're dedicated to providing personalized solutions and support to ensure your peace of mind. Trust us to protect what matters most to you.
+          {data.description}
         </p>
         <hr />
         <div className="mt-4 flex justify-center md:justify-start space-x-6 md:space-x-8 mx-6">
-          <a href="#" className="text-gray-600 hover:text-gray-800">
+          <a href={data.link3} target="_blank" className="text-gray-600 hover:text-gray-800">
             <BsTwitter />
           </a>
-          <a href="#" className="text-gray-600 hover:text-gray-800">
+          <a href={data.link1} target="_blank" className="text-gray-600 hover:text-gray-800">
             <BsLinkedin />
           </a>
-          <a href="#" className="text-gray-600 hover:text-gray-800">
+          <a href={data.link2} target="_blank" className="text-gray-600 hover:text-gray-800">
             <BsDribbble />
           </a>
         </div>
