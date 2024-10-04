@@ -1,20 +1,76 @@
-
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
-import { getTeamMemberById } from '@/app/api/team-member/api'; // Import your API function
-import Image from "next/image";
-import { BsDribbble, BsLinkedin, BsTwitter } from "react-icons/bs";
+import { useQuery, useMutation } from 'react-query';
+import { getTeamMemberById } from '@/app/api/team-member/api'; // Replace with actual path
+import { addMemberReferance } from '@/app/api/team-member/api'; // Replace with actual path
+import Image from 'next/image';
+import { BsDribbble, BsLinkedin, BsTwitter } from 'react-icons/bs';
 
-export default function ContactForm(para:any) {
+export default function ContactForm(para: any) {
   const router = useRouter();
+  const id = para.params.id;
 
-  const id = para.params.id
+  // State to manage form inputs
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    description: '',
+    productCategoryId: 1, // defaulting to 'Health'
+  });
 
+  // Fetch team member data using useQuery
   const { data, isLoading, isError } = useQuery(['teamMember', id], () => getTeamMemberById(id), {
     enabled: !!id,
   });
+
+  // Mutation to handle form submission
+  const mutation = useMutation(addMemberReferance, {
+    onSuccess: () => {
+      alert('Form submitted successfully!');
+    },
+    onError: () => {
+      alert('Error submitting the form.');
+    },
+  });
+
+  // Handle form changes
+  const handleChange = (e: any) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle product category selection
+  const handleCategoryChange = (e: any) => {
+    const categoryMapping: { [key: string]: number } = {
+      Health: 1,
+      Retirement: 2,
+      Savings: 3,
+      Protection: 4,
+    };
+    setFormData({
+      ...formData,
+      productCategoryId: categoryMapping[e.target.value],
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    // Add teamMemberId to form data
+    const finalData = {
+      ...formData,
+      teamMemberId: id,
+    };
+
+    // Call mutation to submit form
+    mutation.mutate(finalData);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -39,9 +95,7 @@ export default function ContactForm(para:any) {
           className="w-60 h-60 md:w-80 md:h-80 mx-auto rounded-full object-cover mb-4"
         />
         <h3 className="text-lg md:text-xl font-bold text-center">{data.name}</h3>
-        <p className="text-center text-gray-600 my-4 md:my-8 text-base md:text-lg">
-          {data.description}
-        </p>
+        <p className="text-center text-gray-600 my-4 md:my-8 text-base md:text-lg">{data.description}</p>
         <hr />
         <div className="mt-4 flex justify-center md:justify-start space-x-6 md:space-x-8 mx-6">
           <a href={data.link3} target="_blank" className="text-gray-600 hover:text-gray-800">
@@ -56,74 +110,90 @@ export default function ContactForm(para:any) {
         </div>
       </div>
       <div className="w-full md:w-1/2 md:mx-10 mt-6">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">
-          Let's level up your brand, together
-        </h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Let's level up your brand, together</h2>
         <p className="mb-4 text-base md:text-lg">
           You can reach us anytime via{' '}
           <a href="mailto:eudaimonia@gmail.com" className="text-red-500">
             eudaimonia@gmail.com
           </a>
         </p>
-        <form className="bg-white p-4 md:p-6 rounded-lg">
+        <form className="bg-white p-4 md:p-6 rounded-lg" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Name</label>
             <input
               type="text"
+              name="name"
               placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
+              required
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Email</label>
             <input
               type="email"
+              name="email"
               placeholder="you@company.com"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
+              required
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Phone number</label>
             <input
               type="text"
+              name="phoneNumber"
               placeholder="+94 71 361 960"
+              value={formData.phoneNumber}
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
+              required
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">How can we help?</label>
             <textarea
+              name="description"
               placeholder="Tell us a little about the project..."
+              value={formData.description}
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               rows={4}
+              required
             ></textarea>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Products</label>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 md:flex md:space-x-4">
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Health</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Retirement</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Savings</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Protection</span>
-              </label>
+              {['Health', 'Retirement', 'Savings', 'Protection'].map((category) => (
+                <label key={category} className="flex items-center">
+                  <input
+                    type="radio"
+                    name="productCategory"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    checked={formData.productCategoryId === {
+                      Health: 1,
+                      Retirement: 2,
+                      Savings: 3,
+                      Protection: 4,
+                    }[category]}
+                  />
+                  <span className="ml-2">{category}</span>
+                </label>
+              ))}
             </div>
           </div>
           <button
             type="submit"
             className="bg-[#D31145] text-white font-bold py-2 px-4 rounded w-full hover:bg-[#e10d46]"
+            disabled={mutation.isLoading}
           >
-            Send
+            {mutation.isLoading ? 'Sending...' : 'Send'}
           </button>
         </form>
       </div>
