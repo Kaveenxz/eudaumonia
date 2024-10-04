@@ -1,24 +1,43 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation } from 'react-query';
+import { addUpCOmiingEvent } from '@/app/api/upcommingEvent/api';
 
 export default function EventForm() {
+  const [topic, setTopic] = useState('');
+  const [date, setDate] = useState('');
+  const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const router = useRouter();
 
-  const handleDownloadExcel = () => {
-    // Implement Excel download logic here
-    console.log('Download Excel clicked');
+  // Mutation to submit event data
+  const { mutate, isLoading, isError } = useMutation(addUpCOmiingEvent, {
+    onSuccess: () => {
+      console.log('Event successfully uploaded!');
+    },
+    onError: (error) => {
+      console.error('Error uploading event:', error);
+    },
+  });
+
+  const handleClear = () => {
+    setTopic('');
+    setDate('');
+    setLocation('');
+    setDescription('');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ description });
-    // Implement upload logic here
-  };
-
-  const handleClear = () => {
-    setDescription('');
+    const eventData = {
+      topic,
+      date: new Date(date), // Convert date string to Date object
+      location,
+      description,
+      adminId: 1, // Pass adminId as 1
+    };
+    mutate(eventData); // Call mutation
   };
 
   return (
@@ -35,6 +54,44 @@ export default function EventForm() {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Topic */}
+        <div className="border border-gray-300 p-4 rounded">
+          <input
+            type="text"
+            id="topic"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Event Topic"
+            required
+          />
+        </div>
+
+        {/* Date */}
+        <div className="border border-gray-300 p-4 rounded">
+          <input
+            type="date"
+            id="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        {/* Location */}
+        <div className="border border-gray-300 p-4 rounded">
+          <input
+            type="text"
+            id="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Event Location"
+            required
+          />
+        </div>
+
         {/* Description */}
         <div className="border border-gray-300 p-4 rounded">
           <textarea
@@ -42,38 +99,35 @@ export default function EventForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
-            placeholder="Description"
+            placeholder="Event Description"
             rows={5}
+            required
           />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center md:space-x-4 space-y-4 md:space-y-0">
-          {/* Download Excel Button */}
+        {/* Clear and Upload Buttons */}
+        <div className="flex flex-col sm:flex-row justify-between gap-4">
           <button
             type="button"
-            onClick={handleDownloadExcel}
-            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-full md:w-auto"
+            onClick={handleClear}
+            className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 w-full sm:w-auto"
           >
-            Download Excel
+            Clear
           </button>
-
-          {/* Clear and Upload Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-            <button
-              type="button"
-              onClick={handleClear}
-              className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 w-full sm:w-auto"
-            >
-              Clear
-            </button>
-            <button
-              type="submit"
-              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-full sm:w-auto"
-            >
-              Upload
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-full sm:w-auto"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Uploading...' : 'Upload'}
+          </button>
         </div>
+
+        {isError && (
+          <div className="text-red-500 mt-4">
+            There was an error uploading the event. Please try again.
+          </div>
+        )}
       </form>
     </div>
   );
