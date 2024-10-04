@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useMutation } from 'react-query';
+import { addBlog } from '@/app/api/blog/api'; // Import the API function
 import 'react-quill/dist/quill.snow.css'; // Quill styles
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -11,6 +13,16 @@ export default function BlogForm() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const router = useRouter();
+
+  const mutation = useMutation(addBlog, {
+    onSuccess: () => {
+      // Navigate to another page or show success message
+    },
+    onError: (error) => {
+      // Handle error (show message to the user, etc.)
+      console.error("Error adding blog:", error);
+    }
+  });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,8 +39,18 @@ export default function BlogForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Upload logic: Send data including the HTML description to the backend
-    console.log({ mainTitle, description, image });
+
+    // Prepare form data to match CreateBlogDto format
+    const formData = new FormData();
+    formData.append('topic', mainTitle);
+    formData.append('description', description);
+    formData.append('adminId', '1'); // Hardcoded for now
+    if (image) {
+      formData.append('blogImage', image);
+    }
+
+    // Trigger mutation to send data to the API
+    mutation.mutate(formData);
   };
 
   return (
@@ -56,12 +78,12 @@ export default function BlogForm() {
             value={description}
             onChange={setDescription}
             placeholder="Description"
-            className="w-full h-full"  
+            className="w-full h-full"
           />
         </div>
 
         {/* Add Image */}
-        <div className="border border-gray-300 p-4 rounded h-48 flex items-center justify-center bg-gray-100">  {/* Rectangle for image */}
+        <div className="border border-gray-300 p-4 rounded h-48 flex items-center justify-center bg-gray-100">
           <label
             htmlFor="image"
             className="cursor-pointer text-gray-500 text-center p-2 bg-white border border-gray-300 rounded-md"

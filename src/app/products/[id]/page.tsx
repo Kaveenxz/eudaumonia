@@ -1,23 +1,21 @@
 'use client'
 import React from 'react'
 import { useParams } from 'next/navigation'
-import { getProductCategories } from '@/app/api/product/apit' // Adjust the path as needed
+import { getProductCategories } from '@/app/api/product/apit' 
 import { useQuery } from 'react-query'
 import img from '@/app/images/Rectangle 60.png'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 function ProductsPage() {
-  const { id } = useParams()
+  const { id }:any = useParams()
   const router = useRouter()
 
-  // Fetch product categories and filter by the selected id
   const { data: categories, isLoading, isError } = useQuery({
     queryKey: ['productCategories'],
     queryFn: getProductCategories
   })
 
-  // Fallback image URL
   const fallbackImage = img
 
   if (isLoading) return <div>Loading products...</div>
