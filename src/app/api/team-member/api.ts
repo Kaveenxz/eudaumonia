@@ -1,5 +1,4 @@
 import axios from "axios";
-import { AnyNode } from "postcss";
 
 export const getallTeamMembers = async ()=> {
     try{
@@ -54,3 +53,23 @@ export const addMemberReferance = async(data:any)=> {
         }
     }
 } 
+
+export const addTeamMember = async (formData:any) => {
+    try {
+      const url:any = process.env.NEXT_PUBLIC_ADD_TEAM_MEMBER;
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'application/json', // Now we are sending JSON
+        },
+      });
+      return response.data;
+    } catch (error:any) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return 'It seems to be a connection issue, try again later....';
+      }
+    }
+  };

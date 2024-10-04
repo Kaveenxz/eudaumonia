@@ -1,37 +1,54 @@
-'use client';
+'use client'
 import { useState } from 'react';
+import { useMutation } from 'react-query';
+import { addTeamMember } from '@/app/api/team-member/api'; // Make sure this points to the right file
 
 export default function MemberForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData]:any = useState({
     name: '',
     description: '',
     link1: '',
     link2: '',
     link3: '',
-    image: null,
+    image: '', // Base64 string will be stored here
   });
-  const [errors, setErrors] = useState({});
-  const [previewImage, setPreviewImage] = useState<string | null>(null); // Preview for selected image
+  const [errors, setErrors]:any = useState({});
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (files) {
-      const file = files[0];
-      setFormData({
-        ...formData,
-        [name]: file,
-      });
-      setPreviewImage(URL.createObjectURL(file)); // Set image preview
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+  const mutation = useMutation(addTeamMember, {
+    onSuccess: () => {
+      alert('Member added successfully');
+      setFormData({ name: '', description: '', link1: '', link2: '', link3: '', image: '' });
+    },
+    onError: () => {
+      alert('Failed to add member');
+    },
+  });
+
+  // Function to handle the file and convert it to Base64
+  const handleImageChange = (e:any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          image: reader.result, // Set the Base64 string here
+        });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
+  const handleChange = (e:any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors:any = {};
     if (!formData.name) newErrors.name = 'Name is required';
     if (!formData.description) newErrors.description = 'Description is required';
     if (!formData.link1) newErrors.link1 = 'At least one link is required';
@@ -39,106 +56,105 @@ export default function MemberForm() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
+    
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      alert('Form submitted');
-      console.log(formData);
+      const data = {
+        name: formData.name,
+        description: formData.description,
+        link1: formData.link1,
+        link2: formData.link2,
+        link3: formData.link3,
+        imagePath: '/images/frank.jpg', // You might want to dynamically generate the image path after uploading
+        createdBy: 1,  // Assuming the `createdBy` is fixed to 1 for now
+      };
+  
+      console.log('Submitting Form Data:', data);
+      mutation.mutate(data);
     }
   };
-
+  
+  
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold text-center text-pink-600 mb-6">Member</h2>
-
-        <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
-          {/* Left side: Form fields */}
-          <div className="flex-1">
-            <div className="mb-4">
-              <label className="block text-gray-700">Name</label>
-              <input
-                type="text"
-                name="name"
-                className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                value={formData.name}
-                onChange={handleChange}
-              />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700">Description</label>
-              <input
-                type="text"
-                name="description"
-                className={`w-full p-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                value={formData.description}
-                onChange={handleChange}
-              />
-              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-            </div>
-
-            {[1, 2, 3].map((i) => (
-              <div className="mb-4" key={`link${i}`}>
-                <label className="block text-gray-700">Link</label>
-                <input
-                  type="text"
-                  name={`link${i}`}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  value={formData[`link${i}`]}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
+    <div className="flex items-center justify-center min-h-screen ">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Add Team Member</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          
+          <div className="space-y-1">
+            <label className="block text-lg font-semibold text-gray-700">Name</label>
+            <input
+              type="text"
+              name="name"
+              className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none`}
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter name"
+            />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
-          {/* Right side: Image uploader */}
-          <div className="flex-1 flex justify-center items-center">
-            <div className="w-64 h-64 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100 relative">
-              <label
-                htmlFor="image"
-                className="cursor-pointer flex items-center justify-center text-gray-500 text-center p-2 bg-white border border-gray-300 rounded-md w-full h-full absolute top-0 left-0"
-              >
-                {previewImage ? (
-                  <img src={previewImage} alt="Selected" className="object-cover w-full h-full rounded-md" />
-                ) : (
-                  <span>Click to add image (Rectangle)</span>
-                )}
-                <input
-                  type="file"
-                  name="image"
-                  id="image"
-                  accept="image/*"
-                  onChange={handleChange}
-                  className="hidden"
-                />
-              </label>
+          <div className="space-y-1">
+            <label className="block text-lg font-semibold text-gray-700">Description</label>
+            <textarea
+              name="description"
+              className={`w-full p-3 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none`}
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter description"
+              rows={4}
+            />
+            {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+          </div>
+
+          {[1, 2, 3].map((i) => (
+            <div className="space-y-1" key={`link${i}`}>
+              <label className="block text-lg font-semibold text-gray-700">Link {i}</label>
+              <input
+                type="text"
+                name={`link${i}`}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none"
+                value={formData[`link${i}`]}
+                onChange={handleChange}
+                placeholder={`Enter link ${i}`}
+              />
             </div>
+          ))}
+
+          <div className="space-y-1">
+            <label className="block text-lg font-semibold text-gray-700">Image</label>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none"
+            />
             {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
           </div>
-        </div>
 
-        {/* Clear and Upload Buttons */}
-        <div className="flex justify-between mt-6">
-          <button
-            type="reset"
-            className="bg-gray-500 text-white py-2 px-4 rounded-md"
-            onClick={() => {
-              setFormData({ name: '', description: '', link1: '', link2: '', link3: '', image: null });
-              setPreviewImage(null);
-            }}
-          >
-            Clear
-          </button>
-          <button type="submit" className="bg-pink-600 text-white py-2 px-4 rounded-md">
-            Upload
-          </button>
-        </div>
-      </form>
+          <div className="flex items-center justify-between mt-6">
+            <button
+              type="reset"
+              className="bg-gray-400 hover:bg-gray-500 text-white py-3 px-6 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              onClick={() => setFormData({ name: '', description: '', link1: '', link2: '', link3: '', image: '' })}
+            >
+              Clear
+            </button>
+            <button
+              type="submit"
+              className="bg-pink-600 hover:bg-pink-700 text-white py-3 px-6 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-600"
+              disabled={mutation.isLoading}
+            >
+              {mutation.isLoading ? 'Uploading...' : 'Upload'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
