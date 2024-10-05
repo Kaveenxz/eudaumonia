@@ -3,11 +3,8 @@ import axios from 'axios';
 export const addBlog = async (data: FormData) => {
   try {
     const url:any = process.env.NEXT_PUBLIC_ADD_BLOG;
-    const response = await axios.post(url, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axios.post(url, data
+    );
 
     return response.data;
   } catch (error: any) {

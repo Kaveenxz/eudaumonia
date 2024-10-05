@@ -1,97 +1,72 @@
-// 'use client'
-// import React from 'react'
-// import Image from 'next/image'
-// import prd1 from '@/app/images/Rectangle 60.png'
-// import prd3 from '@/app/images/Rectangle 61.png'
-// import prd2 from '@/app/images/Rectangle 62.png'
-// import { useParams, useRouter } from 'next/navigation'
-
-// function page() {
-//     const router = useRouter()
-//     const url = useParams()
-//     console.log(url)
-//     const products = [
-//         {
-//             id: 1,
-//             title: "HEALTH",
-//             image: prd1,
-//             desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations…Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
-//         },
-//         {
-//             id: 2,
-//             title: "HEALTH",
-//             image: prd3,
-//             desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations… Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
-//         },
-//         {
-//             id: 3,
-//             title: "HEALTH",
-//             image: prd2,
-//             desc: "This journey we call life has many different milestones and each of us are at a different stage. Our experiences, our needs, our dreams and aspirations Our experiences, our needs, our dreams and aspirations…Our experiences, our needs, our dreams and aspirations…Our experiences, our ne "
-//         }
-//     ]
-
-//     const handleClick = (id:any)=> {
-//         router.push("/"+url.products+"/"+url.id+"/"+id)
-//     }
-//     return (
-//         <div className='lg:mx-20 lg:my-20 mx-6 my-20 '>
-//             <div>
-//                 {products.map((product: any) => (
-//                     <div key={product.id} className='flex gap-5 my-5 max-md:flex-col'>
-//                         <Image src={product.image} alt='product-img'></Image>
-//                         <div>
-//                             <div className='flex gap-2 items-center mb-3'>
-//                                 <div className='w-4 h-4 bg-[#d31145] rounded-full'></div>
-//                                 <h1 className='text-xl font-semibold'>{product.title}</h1>
-//                             </div>
-//                             <p>{product.desc}</p>
-//                             <div className='flex justify-end mt-5 max-md:justify-start'>
-//                                 <button className='bg-[#D31145] text-white text-nowrap h-10 px-3 rounded-2xl' onClick={()=> handleClick(product.id)}>More Details --{'>'}</button>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 ))}
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default page
-
-
 'use client'
 import React from 'react'
-import { useParams } from 'next/navigation'
-import { getProductById } from '@/app/api/product/apit' // Adjust the path to your actual API function
+import { getProductById } from '@/app/api/product/apit'
 import { useQuery } from 'react-query'
 import prd2 from '@/app/images/Rectangle 62.png'
 import Image from 'next/image'
 
 const defaultImageUrl = prd2;
 
-    function ProductDetails() {
-        const { id } = useParams();
-    
-        const { data, error, isLoading } = useQuery(['product', id], () => getProductById(id), {
-            staleTime: 1000 * 60 * 5 // Optional: cache for 5 minutes
-        });
-    
-        if (isLoading) return <p>Loading...</p>;
-        if (error) return <p>Failed to load product details</p>;
-    
-        const { name, description, categoryId, productImages } = data || {};
-        const imageUrl = productImages && productImages.length > 0 ? productImages[0].url : defaultImageUrl;
-    
-        return (
-            <div className='mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20'>
-                <h1 className='text-3xl font-bold'>{name || 'Product Name'}</h1>
-                <Image src={imageUrl} alt={name || 'Product Image'} className='my-4 w-full h-auto max-w-md' />
-                <p className='text-lg my-2'>{description || 'No description available'}</p>
-                <p className='text-md'>Category ID: {categoryId || 'N/A'}</p>
-            </div>
-        )
-    }
-    
+function ProductDetails(a: any) {
+  const id = a.params.detail
+
+  const { data, error, isLoading } = useQuery(['product', id], () => getProductById(id), {
+    staleTime: 1000 * 60 * 5
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Failed to load product details</p>;
+
+  const { name, description, categoryId, productImages } = data || {};
+  const imageUrl = productImages && productImages.length > 0 ? productImages[0].url : defaultImageUrl;
+
+  // Adding fake data for fields missing in API response
+  const mainTitle = "AIA Health Protector";
+  const maximumCoverAge = "Up to age 75";
+  const issueAge = "Age 19-60";
+  const purchaseSource = "AIA Wealth Planner / Financial Planning Executive / Authorized Broker";
+
+  return (
+    <div className='mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20'>
+      {/* Main Title */}
+      <h1 className='text-3xl lg:text-5xl font-bold text-[#D31145] mb-6'>{mainTitle}</h1>
+
+      {/* Flex layout for large screens */}
+      <div className='flex flex-col lg:flex-row gap-10'>
+        {/* Left section with text content */}
+        <div className='flex-1'>
+          <h2 className='text-2xl font-bold mb-4'>What is {mainTitle}?</h2>
+          <p className='text-lg mb-6'>
+            {description || 'A comprehensive health cover that allows you and your family to afford the best healthcare anywhere in the world.'}
+          </p>
+
+          <div className='bg-gray-100 p-4 rounded-md mb-6'>
+            <h3 className='text-xl font-semibold mb-2'>Maximum Cover Ceasing Age</h3>
+            <p>{maximumCoverAge}</p>
+          </div>
+          <div className='bg-gray-100 p-4 rounded-md mb-6'>
+            <h3 className='text-xl font-semibold mb-2'>Issue Age</h3>
+            <p>{issueAge}</p>
+          </div>
+
+          <p className='text-md text-gray-700'>
+            You can buy this from a <strong>{purchaseSource}</strong>
+          </p>
+        </div>
+
+        {/* Right section with image */}
+        <div className='flex-1'>
+          <Image 
+            src={imageUrl} 
+            alt={name || prd2} 
+            className='w-full h-auto object-cover rounded-md'
+            width={600}
+            height={400} // Add dimensions to control the size
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default ProductDetails;

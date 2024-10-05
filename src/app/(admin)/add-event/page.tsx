@@ -35,7 +35,9 @@ export default function EventForm() {
       date: new Date(date), // Convert date string to Date object
       location,
       description,
-      adminId: 1, // Pass adminId as 1
+      adminId: 1,
+      createdBy: 1,
+
     };
     mutate(eventData); // Call mutation
   };

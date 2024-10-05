@@ -12,6 +12,7 @@ export default function BlogForm() {
   const [mainTitle, setMainTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null); // For base64 image
   const router = useRouter();
 
   const mutation = useMutation(addBlog, {
@@ -28,6 +29,13 @@ export default function BlogForm() {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
+
+      // Convert image to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImageBase64(reader.result as string);
+      };
     }
   };
 
@@ -35,22 +43,22 @@ export default function BlogForm() {
     setMainTitle('');
     setDescription('');
     setImage(null);
+    setImageBase64(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prepare form data to match CreateBlogDto format
-    const formData = new FormData();
-    formData.append('topic', mainTitle);
-    formData.append('description', description);
-    formData.append('adminId', '1'); // Hardcoded for now
-    if (image) {
-      formData.append('blogImage', image);
-    }
+    const blogData:any = {
+      topic: mainTitle,
+      description,
+      adminId: 1, // Hardcoded for now
+      createdBy: 1,
+      blogImage: "image/path" // Send the image as base64 encoded string
+    };
 
-    // Trigger mutation to send data to the API
-    mutation.mutate(formData);
+    mutation.mutate(blogData);
+    console.log(blogData); // For debugging
   };
 
   return (

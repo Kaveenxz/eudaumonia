@@ -22,7 +22,8 @@ export const getProductById = async (id:any) => {
 
     try{
         const response = axios.get(url);
-        return response;
+        console.log(response)
+        return (await response).data;
     }catch(error:any){
         if (error.response) {
             return error.response.data;
