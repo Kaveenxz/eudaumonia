@@ -52,6 +52,9 @@ const Navbar: React.FC = () => {
               <Link href="/#blog" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Blogs</Link>
             </li>
             <li>
+              <Link href="/team-member" className="block py-2 px-3 text-white rounded lg:hover:bg-transparent lg:p-0">Team Member</Link>
+            </li>
+            <li>
               <Link href="/#contact" className="block py-2 px-3 text-[#B91A45] rounded bg-white lg:hover:bg-transparent lg:px-5 lg:py-1">Contact Us</Link>
             </li>
           </ul>

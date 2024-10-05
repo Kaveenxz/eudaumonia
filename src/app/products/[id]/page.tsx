@@ -39,7 +39,7 @@ function ProductsPage() {
               </div>
               <p>{product.description.length > 100 ? `${product.description.substring(0, 100)}...` : product.description}</p>
               <div className='flex justify-end mt-5 max-md:justify-start'>
-                <button className='bg-[#D31145] text-white text-nowrap h-10 px-3 rounded-2xl' onClick={() => router.push(`/product/${product.id}`)}>More Details --{'>'}</button>
+                <button className='bg-[#D31145] text-white text-nowrap h-10 px-3 rounded-2xl' onClick={() => router.push(`${id}/${product.id}`)}>More Details --{'>'}</button>
               </div>
             </div>
           </div>

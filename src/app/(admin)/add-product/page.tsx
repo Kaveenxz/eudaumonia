@@ -1,21 +1,30 @@
 'use client';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
+import { addProduct } from '@/app/api/product/apit'; // Ensure this points to the correct file
 
 export default function AddProductForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData]:any = useState({
     mainTitle: '',
     topic: '',
     maxAge: '',
     issueAge: '',
     description: '',
     image: null,
+    categoryId: '', // Holds the selected category ID
   });
+  const [errors, setErrors]:any = useState({});
+  const [imagePreview, setImagePreview]:any = useState(null);
 
-  const [errors, setErrors] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
+  const categories = [
+    { id: 1, name: 'Health' },
+    { id: 2, name: 'Retirement' },
+    { id: 3, name: 'Savings' },
+    { id: 4, name: 'Protection' },
+  ];
 
-  const validateForm = () => {
-    let newErrors = {};
+  const validateForm:any = () => {
+    let newErrors:any = {};
     let isValid = true;
 
     if (!formData.mainTitle) {
@@ -38,17 +47,25 @@ export default function AddProductForm() {
       newErrors.description = 'Description is required';
       isValid = false;
     }
+    if (!formData.categoryId) {
+      newErrors.categoryId = 'Please select a category';
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImageChange = (e) => {
+  const handleCategoryChange = (categoryId:any) => {
+    setFormData({ ...formData, categoryId });
+  };
+
+  const handleImageChange = (e:any) => {
     const file = e.target.files[0];
     if (file) {
       setFormData({ ...formData, image: file });
@@ -56,11 +73,25 @@ export default function AddProductForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const mutation = useMutation(addProduct, {
+    onSuccess: () => {
+      alert('Product added successfully');
+    },
+    onError: () => {
+      alert('Failed to add product');
+    },
+  });
+
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
-      // Form submission logic
+      const productData = {
+        name: formData.mainTitle,
+        description: formData.description,
+        categoryId: formData.categoryId,
+        createdBy: 1,
+      };
+      mutation.mutate(productData);
     }
   };
 
@@ -72,6 +103,7 @@ export default function AddProductForm() {
       issueAge: '',
       description: '',
       image: null,
+      categoryId: '',
     });
     setImagePreview(null);
     setErrors({});
@@ -167,6 +199,26 @@ export default function AddProductForm() {
               </div>
             </div>
 
+            {/* Category Selection */}
+            <div>
+              <label className="block text-gray-700">Select Category</label>
+              <div className="flex sm:space-x-4 max-sm:grid max-sm:grid-cols-2">
+                {categories.map((category) => (
+                  <div key={category.id}>
+                    <input
+                      type="radio"
+                      name="categoryId"
+                      value={category.id}
+                      checked={formData.categoryId === category.id}
+                      onChange={() => handleCategoryChange(category.id)}
+                    />
+                    <label className="ml-2">{category.name}</label>
+                  </div>
+                ))}
+              </div>
+              {errors.categoryId && <p className="text-red-500 text-sm">{errors.categoryId}</p>}
+            </div>
+
             {/* Description */}
             <div>
               <label className="block text-gray-700">Description</label>
@@ -195,8 +247,9 @@ export default function AddProductForm() {
               <button
                 type="submit"
                 className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+                disabled={mutation.isLoading}
               >
-                Upload
+                {mutation.isLoading ? 'Uploading...' : 'Upload'}
               </button>
             </div>
           </form>
