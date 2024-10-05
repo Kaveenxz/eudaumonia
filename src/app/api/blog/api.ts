@@ -17,3 +17,37 @@ export const addBlog = async (data: FormData) => {
     }
   }
 };
+
+export const getAllBlog = async()=>{
+  try {
+    const url:any = process.env.NEXT_PUBLIC_GET_ALL_BLOG;
+    const response = await axios.get(url);
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      return error.response.data;
+    } else if (error.message) {
+      return error.message;
+    } else {
+      return 'It seems to be a connection issue, try again later...';
+    }
+  }
+}
+
+export const getBlogById = async(id:any)=>{
+  try {
+    const url:any = process.env.NEXT_PUBLIC_GET_ALL_BLOG+id;
+    const response = await axios.get(url);
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      return error.response.data;
+    } else if (error.message) {
+      return error.message;
+    } else {
+      return 'It seems to be a connection issue, try again later...';
+    }
+  }
+}
