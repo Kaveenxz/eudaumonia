@@ -2,7 +2,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
-import { addActivity } from '@/app/api/activities/api';
+import { addActivity } from '@/app/api/activities/api'; // Adjust API import as necessary
+
+const convertToBase64 = (file:any) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
 
 export default function ActivitiesForm() {
   const [topic, setTopic] = useState('');
@@ -13,13 +22,12 @@ export default function ActivitiesForm() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-
-  const handleImageChange = async (e) => {
+  const handleImageChange = async (e:any) => {
     const file = e.target.files[0];
     if (file) {
       const base64Image = await convertToBase64(file);
       setImage(base64Image);
-      setImagePreview(URL.createObjectURL(file)); // For preview
+      setImagePreview(URL.createObjectURL(file)); 
     }
   };
 
@@ -33,26 +41,30 @@ export default function ActivitiesForm() {
   };
 
   const submitData = useMutation({
-    mutationFn: async (activityData) => addActivity(activityData),
+    mutationFn: async (activityData) => addActivity(activityData), 
     onSuccess: () => {
       console.log('Activity added successfully');
+    },
+    onError: (error) => {
+      console.error('Error adding activity:', error);
+      setError('Failed to upload activity. Please try again.');
     },
     retry: 3,
     retryDelay: 5000,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     if (validateForm()) {
-      const activityData = {
+      const activityData:any = {
         topic,
         description,
         details,
-        imagePath: image,
+        imagePath: "image",
         createdBy: "2", 
       };
 
-      submitData.mutate(activityData);
+      submitData.mutate(activityData)
     }
   };
 
@@ -75,7 +87,6 @@ export default function ActivitiesForm() {
 
         <form onSubmit={handleSubmit} className="sm:grid grid-cols-1 lg:grid-cols-2 gap-6 max-sm:flex max-sm:flex-col">
           <div className="space-y-6">
-            {/* Topic Input */}
             <div>
               <label htmlFor="topic" className="block text-gray-700 font-medium">Topic</label>
               <input
@@ -88,7 +99,6 @@ export default function ActivitiesForm() {
               />
             </div>
 
-            {/* Description */}
             <div>
               <label htmlFor="description" className="block text-gray-700 font-medium">Description</label>
               <textarea
@@ -100,7 +110,6 @@ export default function ActivitiesForm() {
               />
             </div>
 
-            {/* More Details */}
             <div>
               <label htmlFor="details" className="block text-gray-700 font-medium">More Details</label>
               <textarea
@@ -114,7 +123,6 @@ export default function ActivitiesForm() {
           </div>
 
           <div className="space-y-6">
-            {/* Image Upload */}
             <div>
               <label htmlFor="image" className="block text-gray-700 font-medium">Add Image</label>
               <div
@@ -139,9 +147,6 @@ export default function ActivitiesForm() {
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
-              {imagePreview && (
-                <p className="text-green-600 mt-2">{image?.name} selected</p>
-              )}
             </div>
           </div>
 
