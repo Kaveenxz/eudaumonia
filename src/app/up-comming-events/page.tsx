@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { upcommingEventRegister } from '@/app/api/upcommingEvent/api'; // Import your API function
+import Navbar from '../components/Navbar';
 
 const eventDetails = {
   title: 'InsureFest 2024',
@@ -48,6 +49,9 @@ export default function Home() {
 
   return (
     <div className="flex w-screen mt-14">
+      <div>
+      <Navbar/>
+      </div>
       <div className="p-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Side */}
