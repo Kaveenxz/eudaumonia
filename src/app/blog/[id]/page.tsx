@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { getBlogById } from '@/app/api/blog/api'; // Create this API call to fetch a single blog by ID
 import Image from 'next/image'; // Make sure to import Image from Next.js
 import img1 from '@/app/images/blog2.png'
+import Navbar from '@/app/components/Navbar';
 
 function BlogDetails(param: any) {
   const id = param.params.id;
@@ -19,6 +20,9 @@ function BlogDetails(param: any) {
 
   return (
     <div className="min-h-screen py-8 bg-gray-50 px-4 md:px-8 lg:px-16">
+      <div>
+      <Navbar/>
+      </div>
       <h1 className="text-3xl md:text-5xl font-bold text-center text-gray-800 mt-14">
         {blog?.topic}
       </h1>
