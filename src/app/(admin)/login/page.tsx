@@ -1,9 +1,13 @@
+import user from '@/app/images/user 1.png'
+import Image from 'next/image';
 export default function Login() {
     return (
-      <div className="flex items-center justify-center h-screen bg-red-600">
-        <div className="bg-pink-300 p-8 rounded-lg shadow-lg w-80">
+      <div className="flex items-center justify-center h-screen bg-[#D31145]">
+        <div className="bg-pink-300 p-8 rounded-lg shadow-lg w-80 lg:w-[36%] lg:h-[40%] ">
           <div className="flex flex-col items-center">
-            <div className="bg-black rounded-full w-12 h-12 mb-4"></div>
+            <div className=" w-12 h-12 mb-4">
+              <Image src={user} alt='userImage'/>
+            </div>
             <h2 className="text-xl font-semibold text-black mb-6">Admin</h2>
           </div>
           <form>
