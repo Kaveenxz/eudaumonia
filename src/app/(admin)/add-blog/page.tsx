@@ -67,7 +67,7 @@ export default function BlogForm() {
         <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">Blog</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
         <div className="border border-gray-300 p-4 rounded">
           <input
             type="text"
@@ -78,12 +78,12 @@ export default function BlogForm() {
           />
         </div>
 
-        <div className="border border-gray-300 p-4 rounded h-full ">
+        <div className="border border-gray-300 p-4 rounded h-80 ">
           <ReactQuill
             value={description}
             onChange={setDescription}
             placeholder="Description"
-            className="w-full h-full"
+            className="w-full h-[70%]"
           />
         </div>
 
