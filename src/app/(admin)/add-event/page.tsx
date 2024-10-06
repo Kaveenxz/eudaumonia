@@ -49,7 +49,7 @@ export default function EventForm() {
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
         </button>
-        <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">
+        <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">
           Event
         </h1>
       </div>
@@ -112,7 +112,7 @@ export default function EventForm() {
           </button>
           <button
             type="submit"
-            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-full sm:w-auto"
+            className="bg-[#D31145] text-white py-2 px-4 rounded hover:bg-red-600 w-full sm:w-auto"
             disabled={isLoading}
           >
             {isLoading ? 'Uploading...' : 'Upload'}

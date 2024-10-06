@@ -87,7 +87,7 @@ export default function MemberForm() {
           <button onClick={() => router.back()} className="text-3xl mr-4">
             ⬅️
           </button>
-          <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">
+          <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">
             Member
           </h1>
         </div>
@@ -163,7 +163,7 @@ export default function MemberForm() {
             </button>
             <button
               type="submit"
-              className="bg-pink-600 hover:bg-pink-700 text-white py-3 px-6 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-600"
+              className="bg-[#D31145] hover:bg-pink-700 text-white py-3 px-6 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-600"
               disabled={mutation.isLoading}
             >
               {mutation.isLoading ? 'Uploading...' : 'Upload'}

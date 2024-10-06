@@ -121,7 +121,7 @@ export default function AddProductForm() {
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
         </button>
-        <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">
+        <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">
           Add Product
         </h1>
       </div>          <form onSubmit={handleSubmit} className="space-y-6">
@@ -251,7 +251,7 @@ export default function AddProductForm() {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+                className="px-6 py-2 bg-[#D31145] text-white rounded hover:bg-red-600 transition duration-300"
                 disabled={mutation.isLoading}
               >
                 {mutation.isLoading ? 'Uploading...' : 'Upload'}

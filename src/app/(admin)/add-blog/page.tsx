@@ -67,7 +67,7 @@ export default function BlogForm() {
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
         </button>
-        <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">Blog</h1>
+        <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">Blog</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -120,7 +120,7 @@ export default function BlogForm() {
           </button>
           <button
             type="submit"
-            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+            className="bg-[#D31145] text-white py-2 px-4 rounded hover:bg-red-600"
           >
             Upload
           </button>

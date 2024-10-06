@@ -84,7 +84,7 @@ export default function ActivitiesForm() {
       <div className="bg-white p-8 rounded-lg shadow w-full">
         <div className="flex items-center mb-6">
           <button onClick={() => router.back()} className="text-3xl mr-4 hover:text-red-500 transition duration-300">⬅️</button>
-          <h1 className="text-2xl font-bold text-red-500">Activities</h1>
+          <h1 className="text-2xl font-bold text-[#D31145]">Activities</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="sm:grid grid-cols-1 lg:grid-cols-2 gap-6 max-sm:flex max-sm:flex-col">
@@ -168,7 +168,7 @@ export default function ActivitiesForm() {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+              className="px-6 py-2 bg-[#D31145] text-white rounded hover:bg-red-600 transition duration-300"
             >
               Upload
             </button>
