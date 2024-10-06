@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { addProduct } from '@/app/api/product/apit';
+import { useRouter } from 'next/navigation';
 
 export default function AddProductForm() {
+  const router = useRouter()
   const [formData, setFormData]:any = useState({
     mainTitle: '',
     topic: '',
@@ -113,8 +115,14 @@ export default function AddProductForm() {
     <div className="min-h-screen p-4 bg-gradient-to-b from-white to-gray-100 flex items-center justify-center">
       <div className="container w-screen-md mx-auto ">
         <div className="bg-white rounded-lg  p-6 space-y-6">
-          <h2 className="text-xl font-semibold text-center text-red-500">Add Product</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex items-center mb-6">
+        <button onClick={() => router.back()} className="text-3xl mr-4">
+          ⬅️
+        </button>
+        <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">
+          Add Product
+        </h1>
+      </div>          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div>

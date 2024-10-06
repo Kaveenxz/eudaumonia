@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { addTeamMember } from '@/app/api/team-member/api';
+import { useRouter } from 'next/navigation';
 
 export default function MemberForm() {
+  const router = useRouter()
   const [formData, setFormData]:any = useState({
     name: '',
     description: '',
@@ -81,7 +83,14 @@ export default function MemberForm() {
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Add Team Member</h2>
+      <div className="flex items-center mb-6">
+        <button onClick={() => router.back()} className="text-3xl mr-4">
+          ⬅️
+        </button>
+        <h1 className="text-3xl font-bold text-red-500 text-center flex-grow">
+          Add Member
+        </h1>
+      </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           
           <div className="space-y-1">
