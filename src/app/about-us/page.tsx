@@ -1,9 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
 import img from '@/app/images/Rectangle 81.png'
+import Navbar from '../components/Navbar'
 function page() {
   return (
     <div className='lg:mx-20 lg:my-20 mx-6 my-6'>
+        <div>
+        <Navbar/>
+        </div>
         <h1 className='text-5xl text-[#D31145] mb-5 max-md:text-3xl'>About Us</h1>
         <div className='flex gap-10 max-lg:flex-col'>
             <div>

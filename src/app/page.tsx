@@ -6,11 +6,15 @@ import UpCommingEvents from "./components/UpCommingEvents";
 import Blog from "./components/Blog";
 import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
     <>
       <div className="mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
+        <div>
+        <Navbar/>
+        </div>
         <div id="hero">
           <HeroSection />
         </div>

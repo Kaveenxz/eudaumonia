@@ -21,7 +21,6 @@ export default function RootLayout({
       <QueryProvider>
       <body className={inter.className}>
         <div className="">
-        <Navbar/>
         </div>
         {children}
       </body>

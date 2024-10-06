@@ -9,8 +9,8 @@ function ContactUs() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        number: '',
-        help: ''
+        phoneNumber: '',
+        description: ''
     });
 
     const mutation = useMutation(addContact, {
@@ -56,13 +56,13 @@ function ContactUs() {
                     </div>
 
                     <div className='flex flex-col'>
-                        <label htmlFor="number" className='mb-2 font-medium'>Phone number</label>
-                        <input type="tel" id="number" placeholder='+94 71 361 690' className='border rounded-lg p-3' value={formData.number} onChange={handleChange} />
+                        <label htmlFor="phoneNumber" className='mb-2 font-medium'>Phone number</label>
+                        <input type="tel" id="phoneNumber" placeholder='+94 71 361 690' className='border rounded-lg p-3' value={formData.phoneNumber} onChange={handleChange} />
                     </div>
 
                     <div className='flex flex-col'>
-                        <label htmlFor="help" className='mb-2 font-medium'>How can we help?</label>
-                        <textarea id="help" placeholder='Tell us a little about the project...' rows={4} className='border rounded-lg p-3' value={formData.help} onChange={handleChange}></textarea>
+                        <label htmlFor="description" className='mb-2 font-medium'>How can we help?</label>
+                        <textarea id="description" placeholder='Tell us a little about the project...' rows={4} className='border rounded-lg p-3' value={formData.description} onChange={handleChange}></textarea>
                     </div>
 
                     <button type="submit" className='bg-[#D31145] text-white rounded-lg p-3 mt-5'>

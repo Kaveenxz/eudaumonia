@@ -3,11 +3,13 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
-import { getAllBlog } from '@/app/api/blog/api'; // import your API call
-
+import { getAllBlog } from '@/app/api/blog/api'; 
+import img1 from '@/app/images/blog4.png'
+import Link from 'next/link';
 export default function Blog() {
   const router = useRouter();
 
+  const img = img1
   // Fetch the blogs using useQuery
   const { data: blogPosts, isLoading, error } = useQuery('blogs', getAllBlog);
 
@@ -19,6 +21,11 @@ export default function Blog() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading blogs</div>;
 
+  const truncateDescription = (description: string, maxLength: number) => {
+    if (description.length <= maxLength) return description;
+    return description.substring(0, maxLength) + '...';
+  };
+  
   return (
     <div className="flex flex-col items-center min-h-screen mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
       <div className="max-w-6xl w-full p-8">
@@ -32,7 +39,7 @@ export default function Blog() {
             >
               {/* Placeholder image, replace with actual image logic if available */}
               <Image
-                src={post?.blogImages[0]?.url || '/placeholder-image.png'}
+                src={img}
                 alt={post.topic}
                 className="w-full h-48 object-cover"
                 width={300}
@@ -41,10 +48,9 @@ export default function Blog() {
               <div className="p-4">
                 <h2 className="text-xl font-semibold">{post.topic}</h2>
                 {/* Render HTML description safely */}
-                <div
-                  className="text-gray-600 mt-2"
-                  dangerouslySetInnerHTML={{ __html: post.description }}
-                />
+                <p className="mr-3 mb-3">
+              {truncateDescription(post.description.replace(/<\/?[^>]+(>|$)/g, ''), 100)}
+            </p>
                 <button
                   className="text-red-600 hover:text-red-800 mt-2"
                   onClick={() => handleClick(post.id)}
