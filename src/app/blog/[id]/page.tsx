@@ -1,7 +1,7 @@
 'use client'
 import { useQuery } from 'react-query';
-import { getBlogById } from '@/app/api/blog/api'; // Create this API call to fetch a single blog by ID
-import Image from 'next/image'; // Make sure to import Image from Next.js
+import { getBlogById } from '@/app/api/blog/api';
+import Image from 'next/image';
 import img1 from '@/app/images/blog2.png'
 import Navbar from '@/app/components/Navbar';
 

@@ -1,13 +1,12 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { getProductCategories } from '@/app/api/product/apit' // Make sure the path is correct
+import { getProductCategories } from '@/app/api/product/apit' 
 import { useQuery } from 'react-query'
 
 function Products() {
     const router = useRouter()
 
-    // Fetch categories using React Query
     const { data: categories, isLoading, isError } = useQuery({
         queryKey: ['productCategories'],
         queryFn: getProductCategories

@@ -15,7 +15,6 @@ function Activities() {
 
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Set interval to change slides every 3 seconds
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % data.length)

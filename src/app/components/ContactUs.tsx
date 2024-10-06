@@ -24,7 +24,7 @@ function ContactUs() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        mutation.mutate(formData); // Trigger the mutation
+        mutation.mutate(formData);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

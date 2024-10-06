@@ -5,10 +5,8 @@ import img from "@/app/images/pexels-ron-lach-9034660 2.png";
 export default function Sidebar() {
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="w-1/3 bg-white flex flex-col justify-between p-8">
+      <div className="sm:w-1/3 bg-white flex flex-col justify-between p-8 max-sm:w-full">
         <div className="space-y-4">
-          {/* Links instead of buttons */}
           {[
             { name: "Products", path: "/add-product" },
             { name: "Activities", path: "/add-activity" },
@@ -30,8 +28,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Image Section */}
-      <div className="w-3/4">
+      <div className="sm:w-3/4 max-sm:hidden">
         <Image
           src={img}
           alt="Sidebar Image"

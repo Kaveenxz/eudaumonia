@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation } from 'react-query';
-import { getTeamMemberById } from '@/app/api/team-member/api'; // Replace with actual path
-import { addMemberReferance } from '@/app/api/team-member/api'; // Replace with actual path
+import { getTeamMemberById } from '@/app/api/team-member/api';
+import { addMemberReferance } from '@/app/api/team-member/api';
 import Image from 'next/image';
 import { BsDribbble, BsLinkedin, BsTwitter } from 'react-icons/bs';
 import Navbar from '@/app/components/Navbar';
@@ -13,21 +13,18 @@ export default function ContactForm(para: any) {
   const router = useRouter();
   const id = para.params.id;
 
-  // State to manage form inputs
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phoneNumber: '',
     description: '',
-    productCategoryId: 1, // defaulting to 'Health'
+    productCategoryId: 1,
   });
 
-  // Fetch team member data using useQuery
   const { data, isLoading, isError } = useQuery(['teamMember', id], () => getTeamMemberById(id), {
     enabled: !!id,
   });
 
-  // Mutation to handle form submission
   const mutation = useMutation(addMemberReferance, {
     onSuccess: () => {
       alert('Form submitted successfully!');
@@ -37,7 +34,6 @@ export default function ContactForm(para: any) {
     },
   });
 
-  // Handle form changes
   const handleChange = (e: any) => {
     setFormData({
       ...formData,
@@ -45,7 +41,6 @@ export default function ContactForm(para: any) {
     });
   };
 
-  // Handle product category selection
   const handleCategoryChange = (e: any) => {
     const categoryMapping: { [key: string]: number } = {
       Health: 1,
@@ -59,17 +54,14 @@ export default function ContactForm(para: any) {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // Add teamMemberId to form data
     const finalData = {
       ...formData,
       teamMemberId: id,
     };
 
-    // Call mutation to submit form
     mutation.mutate(finalData);
   };
 

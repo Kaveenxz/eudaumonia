@@ -11,10 +11,8 @@ export default function Blog() {
   const router = useRouter();
 
   const img = img1
-  // Fetch the blogs using useQuery
   const { data: blogPosts, isLoading, error } = useQuery('blogs', getAllBlog);
 
-  // Function to handle the click and navigate to blog/[id] page
   const handleClick = (id: any) => {
     router.push(`/blog/${id}`);
   };
@@ -41,7 +39,6 @@ export default function Blog() {
               className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
               onClick={() => handleClick(post.id)}
             >
-              {/* Placeholder image, replace with actual image logic if available */}
               <Image
                 src={img}
                 alt={post.topic}
@@ -51,7 +48,6 @@ export default function Blog() {
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold">{post.topic}</h2>
-                {/* Render HTML description safely */}
                 <p className="mr-3 mb-3">
               {truncateDescription(post.description.replace(/<\/?[^>]+(>|$)/g, ''), 100)}
             </p>
@@ -66,7 +62,6 @@ export default function Blog() {
           ))}
         </div>
 
-        {/* Pagination Buttons (if required in the future) */}
         <div className="flex justify-center mt-8">
           <button className="px-4 py-2 bg-gray-200 rounded-2xl mx-2 hover:bg-gray-300">
             &larr;

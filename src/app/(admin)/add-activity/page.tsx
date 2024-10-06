@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
-import { addActivity } from '@/app/api/activities/api'; // Adjust API import as necessary
+import { addActivity } from '@/app/api/activities/api';
 
 const convertToBase64 = (file:any) => {
   return new Promise((resolve, reject) => {

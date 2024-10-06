@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { addTeamMember } from '@/app/api/team-member/api'; // Make sure this points to the right file
+import { addTeamMember } from '@/app/api/team-member/api';
 
 export default function MemberForm() {
   const [formData, setFormData]:any = useState({
@@ -10,7 +10,7 @@ export default function MemberForm() {
     link1: '',
     link2: '',
     link3: '',
-    image: '', // Base64 string will be stored here
+    image: '',
   });
   const [errors, setErrors]:any = useState({});
 
@@ -24,7 +24,6 @@ export default function MemberForm() {
     },
   });
 
-  // Function to handle the file and convert it to Base64
   const handleImageChange = (e:any) => {
     const file = e.target.files[0];
     if (file) {
@@ -32,7 +31,7 @@ export default function MemberForm() {
       reader.onloadend = () => {
         setFormData({
           ...formData,
-          image: reader.result, // Set the Base64 string here
+          image: reader.result,
         });
       };
       reader.readAsDataURL(file);
@@ -69,8 +68,8 @@ export default function MemberForm() {
         link1: formData.link1,
         link2: formData.link2,
         link3: formData.link3,
-        imagePath: '/images/frank.jpg', // You might want to dynamically generate the image path after uploading
-        createdBy: 1,  // Assuming the `createdBy` is fixed to 1 for now
+        imagePath: '/images/frank.jpg',
+        createdBy: 1,
       };
   
       console.log('Submitting Form Data:', data);

@@ -21,7 +21,6 @@ function ProductDetails(a: any) {
   const { name, description, categoryId, productImages } = data || {};
   const imageUrl = productImages && productImages.length > 0 ? productImages[0].url : defaultImageUrl;
 
-  // Adding fake data for fields missing in API response
   const mainTitle = "AIA Health Protector";
   const maximumCoverAge = "Up to age 75";
   const issueAge = "Age 19-60";
@@ -32,12 +31,9 @@ function ProductDetails(a: any) {
       <div>
       <Navbar/>
       </div>
-      {/* Main Title */}
       <h1 className='text-3xl lg:text-5xl font-bold text-[#D31145] mb-6'>{mainTitle}</h1>
 
-      {/* Flex layout for large screens */}
       <div className='flex flex-col lg:flex-row gap-10'>
-        {/* Left section with text content */}
         <div className='flex-1'>
           <h2 className='text-2xl font-bold mb-4'>What is {mainTitle}?</h2>
           <p className='text-lg mb-6'>
@@ -58,14 +54,13 @@ function ProductDetails(a: any) {
           </p>
         </div>
 
-        {/* Right section with image */}
         <div className='flex-1'>
           <Image 
             src={imageUrl} 
             alt={name || prd2} 
             className='w-full h-auto object-cover rounded-md'
             width={600}
-            height={400} // Add dimensions to control the size
+            height={400}
           />
         </div>
       </div>

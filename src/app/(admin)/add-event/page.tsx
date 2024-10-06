@@ -11,7 +11,6 @@ export default function EventForm() {
   const [description, setDescription] = useState('');
   const router = useRouter();
 
-  // Mutation to submit event data
   const { mutate, isLoading, isError } = useMutation(addUpCOmiingEvent, {
     onSuccess: () => {
       console.log('Event successfully uploaded!');
@@ -32,19 +31,18 @@ export default function EventForm() {
     e.preventDefault();
     const eventData = {
       topic,
-      date: new Date(date), // Convert date string to Date object
+      date: new Date(date),
       location,
       description,
       adminId: 1,
       createdBy: 1,
 
     };
-    mutate(eventData); // Call mutation
+    mutate(eventData);
   };
 
   return (
     <div className="max-w-3xl mx-auto p-8 sm:p-6 md:p-8 lg:p-12">
-      {/* Header */}
       <div className="flex items-center mb-6">
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
@@ -54,9 +52,7 @@ export default function EventForm() {
         </h1>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Topic */}
         <div className="border border-gray-300 p-4 rounded">
           <input
             type="text"
@@ -69,7 +65,6 @@ export default function EventForm() {
           />
         </div>
 
-        {/* Date */}
         <div className="border border-gray-300 p-4 rounded">
           <input
             type="date"
@@ -81,7 +76,6 @@ export default function EventForm() {
           />
         </div>
 
-        {/* Location */}
         <div className="border border-gray-300 p-4 rounded">
           <input
             type="text"
@@ -94,7 +88,6 @@ export default function EventForm() {
           />
         </div>
 
-        {/* Description */}
         <div className="border border-gray-300 p-4 rounded">
           <textarea
             id="description"
@@ -107,7 +100,6 @@ export default function EventForm() {
           />
         </div>
 
-        {/* Clear and Upload Buttons */}
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <button
             type="button"

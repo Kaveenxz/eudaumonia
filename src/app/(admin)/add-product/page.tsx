@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { addProduct } from '@/app/api/product/apit'; // Ensure this points to the correct file
+import { addProduct } from '@/app/api/product/apit';
 
 export default function AddProductForm() {
   const [formData, setFormData]:any = useState({
@@ -11,7 +11,7 @@ export default function AddProductForm() {
     issueAge: '',
     description: '',
     image: null,
-    categoryId: '', // Holds the selected category ID
+    categoryId: '',
   });
   const [errors, setErrors]:any = useState({});
   const [imagePreview, setImagePreview]:any = useState(null);
@@ -69,7 +69,7 @@ export default function AddProductForm() {
     const file = e.target.files[0];
     if (file) {
       setFormData({ ...formData, image: file });
-      setImagePreview(URL.createObjectURL(file)); // For preview
+      setImagePreview(URL.createObjectURL(file)); 
     }
   };
 
@@ -116,7 +116,6 @@ export default function AddProductForm() {
           <h2 className="text-xl font-semibold text-center text-red-500">Add Product</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Left Side Inputs */}
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-700">Main Title</label>
@@ -171,7 +170,6 @@ export default function AddProductForm() {
                 </div>
               </div>
 
-              {/* Image Upload Section */}
               <div className="space-y-4">
                 <label className="block text-gray-700">Add Image</label>
                 <div
@@ -199,7 +197,6 @@ export default function AddProductForm() {
               </div>
             </div>
 
-            {/* Category Selection */}
             <div>
               <label className="block text-gray-700">Select Category</label>
               <div className="flex sm:space-x-4 max-sm:grid max-sm:grid-cols-2">
@@ -219,7 +216,6 @@ export default function AddProductForm() {
               {errors.categoryId && <p className="text-red-500 text-sm">{errors.categoryId}</p>}
             </div>
 
-            {/* Description */}
             <div>
               <label className="block text-gray-700">Description</label>
               <textarea
@@ -235,7 +231,6 @@ export default function AddProductForm() {
               )}
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end space-x-4">
               <button
                 type="button"

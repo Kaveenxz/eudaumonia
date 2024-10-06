@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
-import { upcommingEventRegister } from '@/app/api/upcommingEvent/api'; // Import your API function
+import { upcommingEventRegister } from '@/app/api/upcommingEvent/api';
 import Navbar from '../components/Navbar';
 
 const eventDetails = {
@@ -25,20 +25,17 @@ export default function Home() {
     gender: '',
   });
 
-  // Mutation for submitting the form
   const mutation = useMutation((data) => upcommingEventRegister(data));
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutation.mutate({
       ...formData,
-      upcomingEventId: 1, // Add default value
-      createdBy: 1, // Add default value
+      upcomingEventId: 1, 
+      createdBy: 1, 
     });
   };
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -54,7 +51,6 @@ export default function Home() {
       </div>
       <div className="p-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Side */}
           <div className='border-2 p-3 rounded-2xl'>
             <h1 className="text-4xl font-bold">{eventDetails.title}</h1>
             <h2 className="text-xl text-gray-700 mt-2">{eventDetails.subtitle}</h2>
@@ -63,7 +59,6 @@ export default function Home() {
             <p className="mt-4 text-gray-600 leading-8">{eventDetails.description}</p>
           </div>
 
-          {/* Right Side */}
           <div>
             <h2 className="text-3xl font-bold text-[#d31145] mb-4 text-center">Register Now</h2>
             <form className="space-y-4" onSubmit={handleSubmit}>
