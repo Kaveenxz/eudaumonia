@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 import { useMutation } from 'react-query';
 import { addBlog } from '@/app/api/blog/api'; 
 import 'react-quill/dist/quill.snow.css'; 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -17,9 +19,10 @@ export default function BlogForm() {
 
   const mutation = useMutation(addBlog, {
     onSuccess: () => {
+      toast.success("Blog added successfully")
     },
     onError: (error) => {
-      console.error("Error adding blog:", error);
+      toast.error("Error adding blog:");
     }
   });
 
@@ -59,7 +62,7 @@ export default function BlogForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <div className=" mx-auto p-8">
       <div className="flex items-center mb-6">
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
@@ -123,6 +126,7 @@ export default function BlogForm() {
           </button>
         </div>
       </form>
+      <ToastContainer/>
     </div>
   );
 }

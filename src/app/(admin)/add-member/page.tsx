@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { addTeamMember } from '@/app/api/team-member/api';
 import { useRouter } from 'next/navigation';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function MemberForm() {
   const router = useRouter();
@@ -18,11 +20,11 @@ export default function MemberForm() {
 
   const mutation = useMutation(addTeamMember, {
     onSuccess: () => {
-      alert('Member added successfully');
+      toast.success('Member added successfully');
       setFormData({ name: '', description: '', link1: '', link2: '', link3: '', image: '' });
     },
     onError: () => {
-      alert('Failed to add member');
+      toast.error('Failed to add member');
     },
   });
 
@@ -79,8 +81,8 @@ export default function MemberForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full ">
+    <div className="flex items-center justify-center p-4">
+      <div className="bg-white p-8 rounded-xl shadow w-full ">
         <div className="flex items-center mb-6">
           <button onClick={() => router.back()} className="text-3xl mr-4">
             ⬅️
@@ -169,6 +171,7 @@ export default function MemberForm() {
           </div>
         </form>
       </div>
+      <ToastContainer/>
     </div>
   );
 }

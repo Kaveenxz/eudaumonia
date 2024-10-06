@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 import { addActivity } from '@/app/api/activities/api';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const convertToBase64 = (file:any) => {
   return new Promise((resolve, reject) => {
@@ -43,10 +45,10 @@ export default function ActivitiesForm() {
   const submitData = useMutation({
     mutationFn: async (activityData) => addActivity(activityData), 
     onSuccess: () => {
-      console.log('Activity added successfully');
+      toast.success('Activity added successfully');
     },
     onError: (error) => {
-      console.error('Error adding activity:', error);
+      toast.error('Error adding activity:');
       setError('Failed to upload activity. Please try again.');
     },
     retry: 3,
@@ -78,8 +80,8 @@ export default function ActivitiesForm() {
   };
 
   return (
-    <div className="min-h-screen w-screen p-6 bg-gradient-to-b from-white to-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-6xl w-full">
+    <div className=" w-screen p-6 bg-gradient-to-b  flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow w-full">
         <div className="flex items-center mb-6">
           <button onClick={() => router.back()} className="text-3xl mr-4 hover:text-red-500 transition duration-300">⬅️</button>
           <h1 className="text-2xl font-bold text-red-500">Activities</h1>
@@ -173,6 +175,7 @@ export default function ActivitiesForm() {
           </div>
         </form>
       </div>
+      <ToastContainer/>
     </div>
   );
 }

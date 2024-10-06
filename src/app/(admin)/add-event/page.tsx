@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 import { addUpCOmiingEvent } from '@/app/api/upcommingEvent/api';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EventForm() {
   const [topic, setTopic] = useState('');
@@ -13,10 +15,10 @@ export default function EventForm() {
 
   const { mutate, isLoading, isError } = useMutation(addUpCOmiingEvent, {
     onSuccess: () => {
-      console.log('Event successfully uploaded!');
+      toast.success('Event successfully uploaded!');
     },
     onError: (error) => {
-      console.error('Error uploading event:', error);
+      toast.error('Error uploading event');
     },
   });
 
@@ -42,7 +44,7 @@ export default function EventForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 sm:p-6 md:p-8 lg:p-12">
+    <div className=" mx-auto p-8 sm:p-6 md:p-8 lg:p-12">
       <div className="flex items-center mb-6">
         <button onClick={() => router.back()} className="text-3xl mr-4">
           ⬅️
@@ -123,6 +125,7 @@ export default function EventForm() {
           </div>
         )}
       </form>
+      <ToastContainer/>
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { addProduct } from '@/app/api/product/apit';
 import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddProductForm() {
   const router = useRouter()
@@ -77,10 +79,10 @@ export default function AddProductForm() {
 
   const mutation = useMutation(addProduct, {
     onSuccess: () => {
-      alert('Product added successfully');
+      toast.success('Product added successfully!');
     },
     onError: () => {
-      alert('Failed to add product');
+      toast.error('Failed to add product. Please try again.');
     },
   });
 
@@ -112,7 +114,7 @@ export default function AddProductForm() {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-b from-white to-gray-100 flex items-center justify-center">
+    <div className=" p-4 bg-gradient-to-b flex items-center justify-center">
       <div className="container w-screen-md mx-auto ">
         <div className="bg-white rounded-lg  p-6 space-y-6">
         <div className="flex items-center mb-6">
@@ -258,6 +260,7 @@ export default function AddProductForm() {
           </form>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
