@@ -6,6 +6,7 @@ import { useQuery } from 'react-query'
 import img from '@/app/images/Rectangle 60.png'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Navbar from '@/app/components/Navbar'
 
 function ProductsPage() {
   const { id }: any = useParams()
@@ -25,6 +26,9 @@ function ProductsPage() {
 
   return (
     <div className="lg:mx-20 lg:my-20 mx-6 my-20">
+      <div>
+      <Navbar/>
+      </div>
       <div>
         {selectedCategory?.products?.map((product: any) => (
           <div key={product.id} className="flex gap-5 my-5 max-md:flex-col">

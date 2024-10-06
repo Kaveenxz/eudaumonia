@@ -4,6 +4,7 @@ import { getProductById } from '@/app/api/product/apit'
 import { useQuery } from 'react-query'
 import prd2 from '@/app/images/Rectangle 62.png'
 import Image from 'next/image'
+import Navbar from '@/app/components/Navbar'
 
 const defaultImageUrl = prd2;
 
@@ -28,6 +29,9 @@ function ProductDetails(a: any) {
 
   return (
     <div className='mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20'>
+      <div>
+      <Navbar/>
+      </div>
       {/* Main Title */}
       <h1 className='text-3xl lg:text-5xl font-bold text-[#D31145] mb-6'>{mainTitle}</h1>
 
