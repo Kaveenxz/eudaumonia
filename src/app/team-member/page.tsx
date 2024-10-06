@@ -11,6 +11,7 @@ import avt8 from '@/app/images/Avatar.png'
 import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 import { getallTeamMembers } from "../api/team-member/api";
+import Navbar from "../components/Navbar";
 
 // const teamMembers = [
 //   {
@@ -131,6 +132,9 @@ export default function MeetOurTeam() {
 
   return (
     <section id="meetourteam" className="bg-gray-100 py-16">
+      <div>
+      <Navbar/>
+      </div>
       <div className="container mx-auto text-center">
         <h2 className="text-4xl font-bold my-10">Meet Our Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

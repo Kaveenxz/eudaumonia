@@ -7,6 +7,7 @@ import { getTeamMemberById } from '@/app/api/team-member/api'; // Replace with a
 import { addMemberReferance } from '@/app/api/team-member/api'; // Replace with actual path
 import Image from 'next/image';
 import { BsDribbble, BsLinkedin, BsTwitter } from 'react-icons/bs';
+import Navbar from '@/app/components/Navbar';
 
 export default function ContactForm(para: any) {
   const router = useRouter();
@@ -86,6 +87,9 @@ export default function ContactForm(para: any) {
 
   return (
     <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 max-lg:mt-6 mx-4 md:mx-10 lg:mx-20 my-10 lg:my-20">
+      <div>
+      <Navbar/>
+      </div>
       <div className="bg-white py-10 md:py-14 rounded-2xl border-2 w-full md:w-1/2 mb-6 md:mb-0">
         <Image
           src={data.imagePath}
