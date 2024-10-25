@@ -13,6 +13,7 @@ export default function ContactForm(para: any) {
   const router = useRouter();
   const id = para.params.id;
 
+  // second number also need to add
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -140,6 +141,16 @@ export default function ContactForm(para: any) {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Phone number</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              placeholder="+94 71 361 960"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+            <label className="block text-gray-700 font-bold mb-2">Phone number 2 (optional)</label>
             <input
               type="text"
               name="phoneNumber"

@@ -37,7 +37,7 @@ function Activities() {
   return (
     <div className='flex flex-col lg:flex-row gap-14 border-2 rounded-3xl border-gray-300'>
       <div className='relative w-full lg:w-1/2 max-lg:hidden'>
-        {data.map((activity:any, index:any) => (
+        {data?.map((activity:any, index:any) => (
           <div
             key={activity.id}
             className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
