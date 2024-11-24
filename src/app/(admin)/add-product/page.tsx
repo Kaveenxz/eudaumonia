@@ -1,24 +1,29 @@
 'use client';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
-import { addProduct } from '@/app/api/product/apit';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { addProduct, getAllProducts, updateProduct, deleteProduct } from '@/app/api/product/apit';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AiFillDelete } from 'react-icons/ai';
 
 export default function AddProductForm() {
-  const router = useRouter()
-  const [formData, setFormData]:any = useState({
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const [formData, setFormData] = useState({
+    id: null,
     mainTitle: '',
     topic: '',
-    maxAge: '',
-    issueAge: '',
+    coverAge: '', // Expecting an integer
+    issueAge: '', // Expecting an integer
     description: '',
     image: null,
     categoryId: '',
   });
-  const [errors, setErrors]:any = useState({});
-  const [imagePreview, setImagePreview]:any = useState(null);
+  const [errors, setErrors] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const categories = [
     { id: 1, name: 'Health' },
@@ -27,104 +32,112 @@ export default function AddProductForm() {
     { id: 4, name: 'Protection' },
   ];
 
-  const validateForm:any = () => {
-    let newErrors:any = {};
-    let isValid = true;
+  const { data: products } = useQuery('products', getAllProducts);
 
-    if (!formData.mainTitle) {
-      newErrors.mainTitle = 'Main Title is required';
-      isValid = false;
-    }
-    if (!formData.topic) {
-      newErrors.topic = 'Topic is required';
-      isValid = false;
-    }
-    if (!formData.maxAge || isNaN(formData.maxAge) || formData.maxAge <= 0) {
-      newErrors.maxAge = 'Maximum Cover Ceasing Age must be a positive number';
-      isValid = false;
-    }
-    if (!formData.issueAge || isNaN(formData.issueAge) || formData.issueAge <= 0) {
-      newErrors.issueAge = 'Issue Age must be a positive number';
-      isValid = false;
-    }
-    if (!formData.description) {
-      newErrors.description = 'Description is required';
-      isValid = false;
-    }
-    if (!formData.categoryId) {
-      newErrors.categoryId = 'Please select a category';
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleInputChange = (e:any) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleCategoryChange = (categoryId:any) => {
-    setFormData({ ...formData, categoryId });
-  };
-
-  const handleImageChange = (e:any) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, image: file });
-      setImagePreview(URL.createObjectURL(file)); 
-    }
-  };
-
-  const mutation = useMutation(addProduct, {
+  const productMutation = useMutation({
+    mutationFn: (data) => (isUpdating ? updateProduct(data.id, data) : addProduct(data)),
     onSuccess: () => {
-      toast.success('Product added successfully!');
+      toast.success(isUpdating ? 'Product updated successfully!' : 'Product added successfully!');
+      setFormData({ id: null, mainTitle: '', topic: '', coverAge: '', issueAge: '', description: '', image: null, categoryId: '' });
+      setImagePreview(null);
+      setIsUpdating(false);
+      queryClient.invalidateQueries('products');
     },
     onError: () => {
-      toast.error('Failed to add product. Please try again.');
+      toast.error('Operation failed. Please try again.');
     },
   });
 
-  const handleSubmit = (e:any) => {
+  const deleteMutation = useMutation(({ id, adminId }) => deleteProduct(id, adminId), {
+    onSuccess: () => {
+      toast.success('Product deleted successfully!');
+      queryClient.invalidateQueries('products');
+    },
+    onError: () => {
+      toast.error('Failed to delete product. Please try again.');
+    },
+  });
+
+  const validateForm = () => {
+    let newErrors = {};
+    let isValid = true;
+    if (!formData.mainTitle) newErrors.mainTitle = 'Main Title is required';
+    if (!formData.topic) newErrors.topic = 'Topic is required';
+    if (!formData.coverAge || isNaN(Number(formData.coverAge)) || Number(formData.coverAge) <= 0) newErrors.coverAge = 'Cover Age must be a positive number';
+    if (!formData.issueAge || isNaN(Number(formData.issueAge)) || Number(formData.issueAge) <= 0) newErrors.issueAge = 'Issue Age must be a positive number';
+    if (!formData.description) newErrors.description = 'Description is required';
+    if (!formData.categoryId) newErrors.categoryId = 'Please select a category';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: name === 'coverAge' || name === 'issueAge' ? parseInt(value) || '' : value, // Convert to integer
+    });
+  };
+
+  const handleCategoryChange = (categoryId) => setFormData({ ...formData, categoryId });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       const productData = {
+        ...formData,
+        coverAge: parseInt(formData.coverAge), // Ensure integer conversion before submission
+        issueAge: parseInt(formData.issueAge), // Ensure integer conversion before submission
         name: formData.mainTitle,
-        description: formData.description,
-        categoryId: formData.categoryId,
         createdBy: 1,
       };
-      mutation.mutate(productData);
+      productMutation.mutate(productData);
     }
   };
 
   const handleClear = () => {
-    setFormData({
-      mainTitle: '',
-      topic: '',
-      maxAge: '',
-      issueAge: '',
-      description: '',
-      image: null,
-      categoryId: '',
-    });
+    setFormData({ id: null, mainTitle: '', topic: '', coverAge: '', issueAge: '', description: '', image: null, categoryId: '' });
     setImagePreview(null);
     setErrors({});
+    setIsUpdating(false);
+  };
+
+  const handleDelete = (productId:any) => deleteMutation.mutate({ id: productId, adminId: 1 });
+  const handleEdit = (product) => {
+    setFormData({
+      id: product.id,
+      mainTitle: product.mainTitle,
+      topic: product.topic,
+      coverAge: product.coverAge.toString(), // Display as string for input
+      issueAge: product.issueAge.toString(), // Display as string for input
+      description: product.description,
+      categoryId: product.categoryId,
+    });
+    setImagePreview(product.image);
+    setIsUpdating(true);
   };
 
   return (
-    <div className=" p-4 bg-gradient-to-b flex items-center justify-center">
-      <div className="container w-screen-md mx-auto ">
-        <div className="bg-white rounded-lg  p-6 space-y-6">
-        <div className="flex items-center mb-6">
-        <button onClick={() => router.back()} className="text-3xl mr-4">
-          ⬅️
-        </button>
-        <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">
-          Add Product
-        </h1>
-      </div>          <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="p-4 bg-gradient-to-b flex items-center justify-center">
+      <div className="container w-screen-md mx-auto">
+        <div className="bg-white rounded-lg p-6 space-y-6">
+          <div className="flex items-center mb-6">
+            <button onClick={() => router.back()} className="text-3xl mr-4">
+              ⬅️
+            </button>
+            <h1 className="text-3xl font-bold text-[#D31145] text-center flex-grow">
+              {isUpdating ? 'Update Product' : 'Add Product'}
+            </h1>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div>
@@ -139,7 +152,6 @@ export default function AddProductForm() {
                   />
                   {errors.mainTitle && <p className="text-red-500 text-sm">{errors.mainTitle}</p>}
                 </div>
-
                 <div>
                   <label className="block text-gray-700">Topic</label>
                   <input
@@ -152,20 +164,18 @@ export default function AddProductForm() {
                   />
                   {errors.topic && <p className="text-red-500 text-sm">{errors.topic}</p>}
                 </div>
-
                 <div>
                   <label className="block text-gray-700">Maximum Cover Ceasing Age</label>
                   <input
                     type="number"
-                    name="maxAge"
-                    value={formData.maxAge}
+                    name="coverAge"
+                    value={formData.coverAge}
                     onChange={handleInputChange}
                     className="w-full p-3 border border-gray-300 rounded"
                     placeholder="Enter Maximum Age"
                   />
-                  {errors.maxAge && <p className="text-red-500 text-sm">{errors.maxAge}</p>}
+                  {errors.coverAge && <p className="text-red-500 text-sm">{errors.coverAge}</p>}
                 </div>
-
                 <div>
                   <label className="block text-gray-700">Issue Age</label>
                   <input
@@ -179,7 +189,6 @@ export default function AddProductForm() {
                   {errors.issueAge && <p className="text-red-500 text-sm">{errors.issueAge}</p>}
                 </div>
               </div>
-
               <div className="space-y-4">
                 <label className="block text-gray-700">Add Image</label>
                 <div
@@ -206,26 +215,23 @@ export default function AddProductForm() {
                 </div>
               </div>
             </div>
-
             <div>
               <label className="block text-gray-700">Select Category</label>
-              <div className="flex sm:space-x-4 max-sm:grid max-sm:grid-cols-2">
+              <select
+                name="categoryId"
+                value={formData.categoryId}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded"
+              >
+                <option value="">Select Category</option>
                 {categories.map((category) => (
-                  <div key={category.id}>
-                    <input
-                      type="radio"
-                      name="categoryId"
-                      value={category.id}
-                      checked={formData.categoryId === category.id}
-                      onChange={() => handleCategoryChange(category.id)}
-                    />
-                    <label className="ml-2">{category.name}</label>
-                  </div>
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
                 ))}
-              </div>
+              </select>
               {errors.categoryId && <p className="text-red-500 text-sm">{errors.categoryId}</p>}
             </div>
-
             <div>
               <label className="block text-gray-700">Description</label>
               <textarea
@@ -233,34 +239,42 @@ export default function AddProductForm() {
                 value={formData.description}
                 onChange={handleInputChange}
                 className="w-full p-3 border border-gray-300 rounded"
-                rows={4}
+                rows="4"
                 placeholder="Enter Description"
               ></textarea>
-              {errors.description && (
-                <p className="text-red-500 text-sm">{errors.description}</p>
-              )}
+              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             </div>
-
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
-                className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
                 onClick={handleClear}
+                className="px-4 py-2 bg-gray-500 text-white rounded"
               >
                 Clear
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#D31145] text-white rounded hover:bg-red-600 transition duration-300"
-                disabled={mutation.isLoading}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
               >
-                {mutation.isLoading ? 'Uploading...' : 'Upload'}
+                {isUpdating ? 'Update Product' : 'Add Product'}
               </button>
             </div>
           </form>
+          <h2 className="text-2xl mt-8 font-bold">Current Products</h2>
+          <div className="mt-4">
+            {products?.map((product) => (
+              <div key={product.id} className="flex items-center justify-between p-3 bg-gray-100 rounded mb-2">
+                <span onClick={() => handleEdit(product)} className="cursor-pointer">{product.mainTitle}</span>
+                <AiFillDelete
+                  className="text-red-600 cursor-pointer"
+                  onClick={() => handleDelete(product.id)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

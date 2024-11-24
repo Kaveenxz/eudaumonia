@@ -73,3 +73,42 @@ export const addTeamMember = async (formData:any) => {
       }
     }
   };
+
+
+  export const deleteTeamMember = async (id:any, adminId:any) => {
+    const url = `${process.env.NEXT_PUBLIC_ADD_TEAM_MEMBER}/${id}?deletedBy=${adminId}`;
+  
+    try {
+      const response = await axios.delete(url);
+      return response.data;
+    } catch (error:any) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return 'It seems to be a connection issue, try again later....';
+      }
+    }
+  };
+  export const updateTeamMember = async ({ id, ...data }) => {
+    const url = `${process.env.NEXT_PUBLIC_ADD_TEAM_MEMBER}/${id}`;
+  
+    try {
+      console.log("PATCH URL:", url);
+      console.log("Payload:", data);
+      const response = await axios.patch(url, data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return 'It seems to be a connection issue, try again later....';
+      }
+    }
+  };
+  

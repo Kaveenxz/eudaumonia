@@ -54,3 +54,53 @@ export const getAllUpCOmiingEvent = async()=> {
         }
     }
 } 
+
+export const deleteEvent = async (id: number, adminId: number) => {
+    const url = `${process.env.NEXT_PUBLIC_GET_ALL_UPCOMMING_EVENT}/${id}?deletedBy=${adminId}`;
+  
+    try {
+      const response = await axios.delete(url);
+      return response.data;
+    } catch (error: any) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return 'It seems to be a connection issue, try again later....';
+      }
+    }
+  };
+  
+  export const updateEvent = async (id: number, formData: any) => {
+    const url: any = `${process.env.NEXT_PUBLIC_GET_ALL_UPCOMMING_EVENT}/${id}`;
+  
+    try {
+      const response = await axios.patch(url, formData);
+      return response.data;
+    } catch (error: any) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return 'It seems to be a connection issue, try again later....';
+      }
+    }
+  };
+  
+  export const getEventById = async (id: number) => {
+    try {
+      const url: any = `${process.env.NEXT_PUBLIC_GET_ALL_UPCOMMING_EVENT}/${id}`;
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error: any) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.message) {
+        return error.message;
+      } else {
+        return "It seems to be a connection issue try again later....";
+      }
+    }
+  };
